@@ -89,6 +89,8 @@ public class WeatherData {
 			hourlyData.add(new HourlyWeather(temp, date.get(Calendar.HOUR_OF_DAY), null));
 		}
 		
+		dailyData.add(aggregateDaily(hourlyData, currentDay)); // Add last day since loop is already done
+		
 		return dailyData;
 	}
 	
