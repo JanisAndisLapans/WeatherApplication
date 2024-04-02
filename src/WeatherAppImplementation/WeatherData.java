@@ -2,7 +2,6 @@ package WeatherAppImplementation;
 
 import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -103,6 +102,12 @@ public class WeatherData {
 	// to - last date (max = today + 16 days)
 	// callbackOnLoad - optional callback
 	public void loadDaysWithHours(Calendar from, Calendar to, Runnable callbackOnLoad) throws Exception {
+		final List<String> propertiesToFetch = new ArrayList<String>(){private static final long serialVersionUID = 7279058049570501796L;
+
+		{  
+			add("temperature_2m"); // TODO: fetch more data
+		}};
+		
 		loaded = false;
 		
 		// Validation
@@ -134,7 +139,7 @@ public class WeatherData {
 			.addParam("latitude", Double.toString(this.latitude))
 			.addParam("start_date", APIDateFormat.format(from.getTime()))
 			.addParam("end_date", APIDateFormat.format(Util.minDate(to, forecastMinDate).getTime()))
-			.addParam("hourly", "temperature_2m") // TODO: fetch more data
+			.addParam("hourly", String.join(",", propertiesToFetch))
 			.exec(new APIQuery.APICallback() {
 				public void run(int responseCode, BufferedReader jsonResult, String errorMessage) {
 					try {
@@ -176,7 +181,7 @@ public class WeatherData {
 			.addParam("latitude", Double.toString(this.latitude))
 			.addParam("forecast_days", Long.toString(daysAhead))
 			.addParam("past_days", Long.toString(daysAgo))
-			.addParam("hourly", "temperature_2m") // TODO: fetch more data
+			.addParam("hourly",  String.join(",", propertiesToFetch))
 			.exec(new APIQuery.APICallback() {
 				public void run(int responseCode, BufferedReader jsonResult, String errorMessage) {
 					try {
