@@ -5,12 +5,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Util {
 	public static Calendar truncateDate(Calendar date) {
-		date.set(Calendar.HOUR, 0);
-		date.set(Calendar.MINUTE, 0);
-		date.set(Calendar.SECOND, 0);
-		date.set(Calendar.MILLISECOND, 0);
+		Calendar truncDate = (Calendar) date.clone();
 		
-		return date;
+		truncDate.set(Calendar.HOUR_OF_DAY, 0);
+		truncDate.set(Calendar.AM_PM, 0);
+		truncDate.set(Calendar.HOUR, 0);
+		truncDate.set(Calendar.MINUTE, 0);
+		truncDate.set(Calendar.SECOND, 0);
+		truncDate.set(Calendar.MILLISECOND, 0);
+		return truncDate;
 	}
 	
 	public static Calendar minDate(Calendar date1, Calendar date2) {
@@ -32,5 +35,6 @@ public class Util {
 		long diff = date2.getTime().getTime() - date1.getTime().getTime();
 		
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-	}
+	}	
+
 }

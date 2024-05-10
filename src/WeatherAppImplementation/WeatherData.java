@@ -108,6 +108,10 @@ public class WeatherData {
 			add("temperature_2m"); // TODO: fetch more data
 		}};
 		
+		// Remove time info for comparisons
+		to = Util.truncateDate(to);
+		from = Util.truncateDate(from);
+		
 		loaded = false;
 		
 		// Validation
@@ -167,13 +171,21 @@ public class WeatherData {
 		
 		
 		// Fetch forecast
-		if(!to.before(today)) {
+		if(!to.before(forecastMinDate)) {
 			loaded2 = false;
 			
 			forecastMinDate.add(Calendar.DAY_OF_YEAR, 1);
 			var fetchDataFrom = Util.maxDate(forecastMinDate, from);
 			var daysAhead = Util.daysBetween(today, to) + 1;
+			if(daysAhead < 0 ) {
+				daysAhead = 0;
+			}
 			var daysAgo = Util.daysBetween(fetchDataFrom, today);
+			if(daysAgo < 0) {
+				daysAgo = 0;
+			}
+			
+			var toLocal = to; // for use in response to avoid error
 			
 			new APIQuery(APIUrlForecast)
 			.function(Forecast)
@@ -189,8 +201,13 @@ public class WeatherData {
 							throw new RuntimeException(errorMessage);
 						}
 					
-						days.addAll(getDataFromJson(jsonResult));
-						
+						for(var day : getDataFromJson(jsonResult))
+						{
+							if(!day.getDate().before(fetchDataFrom) && !day.getDate().after(toLocal)) {
+								days.add(day);
+							}
+						}
+												
 						loaded2 = true;
 						if(loaded1) {
 							loaded = true;
