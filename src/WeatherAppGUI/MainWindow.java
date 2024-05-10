@@ -37,6 +37,9 @@ import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import java.util.Calendar;
 import Util.Settings;
+import javax.swing.ScrollPaneConstants;
+import java.awt.FlowLayout;
+import javax.swing.SpringLayout;
 
 
 public class MainWindow {
@@ -68,6 +71,7 @@ public class MainWindow {
 	private JLabel tempLabel;
 	private LocationField locationField;
 	private JDateChooser dateChooser;
+	private JPanel hourPanel;
 	
 	WeatherData currentWeatherData;
 	
@@ -76,6 +80,7 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setForeground(Color.WHITE);
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBounds(0, 0, 1200, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,14 +139,25 @@ public class MainWindow {
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/temperature-icon.png")));
-		label.setBounds(397, 203, 152, 149);
+		label.setBounds(356, 199, 152, 149);
 		frame.getContentPane().add(label);
 		
 		tempLabel = new JLabel("...");
 		tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		tempLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		tempLabel.setBounds(540, 214, 174, 149);
+		tempLabel.setBounds(492, 199, 174, 149);
 		frame.getContentPane().add(tempLabel);		
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(368, 381, 810, 99);
+		frame.getContentPane().add(scrollPane);
+		
+		hourPanel = new JPanel();
+		hourPanel.setForeground(new Color(255, 255, 255));
+		hourPanel.setBorder(null);
+		hourPanel.setBackground(new Color(255, 255, 255));
+		scrollPane.setViewportView(hourPanel);
+		hourPanel.setLayout(new BoxLayout(hourPanel, BoxLayout.X_AXIS));
 	}
 	
 	private void fetchWeatherData() {
@@ -159,6 +175,39 @@ public class MainWindow {
 				tempLabel.setText(String.format("%.0f %s", day.getTemperature(), Settings.temperatureSymbol));
 				
 				// TODO: Implement showing more fetched data in GUI
+				
+				// Display hour data
+				
+				hourPanel.removeAll();
+				
+				for(var hour : day.getHours()) {
+				
+					JPanel hourDataElement = new JPanel();
+					hourDataElement.setBackground(Color.WHITE);
+					hourDataElement.setLayout(null);
+					
+					JLabel hourLabel = new JLabel((hour.getHour() < 10 ? "0" : "") + Integer.toString(hour.getHour()) + ":00");
+					hourLabel.setFont(new Font("Dialog", Font.BOLD, 20));
+					hourLabel.setHorizontalAlignment(SwingConstants.CENTER);
+					hourLabel.setBounds(0, 12, 110, 17);
+					hourDataElement.add(hourLabel);
+					
+					JLabel dataLabel = new JLabel(String.format("%.0f°", hour.getTemperature()));
+					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
+					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
+					dataLabel.setBounds(0, 55, 110, 17);
+					hourDataElement.add(dataLabel);
+					
+					// Make sure jPanel stays the same size in box layout and scrolling works properly by setting fixed size
+					hourDataElement.setMaximumSize(new Dimension(110, 190));
+					hourDataElement.setMinimumSize(new Dimension(110, 190));
+					hourDataElement.setPreferredSize(new Dimension(110, 0));
+					
+					hourPanel.add(hourDataElement);
+				}
+				
+				hourPanel.revalidate();
+				// TODO: Implement more different data besides temp
 			});
 		} catch (Exception e) {
 			Messages.showError(e.getMessage());
