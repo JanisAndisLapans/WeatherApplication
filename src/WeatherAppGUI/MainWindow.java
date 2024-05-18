@@ -68,6 +68,7 @@ public class MainWindow {
 	}
 	
 	private JButton btnSaveSettings;
+	private JButton timeFormat;
 	private JLabel tempLabel;
 	private LocationField locationField;
 	private JDateChooser dateChooser;
@@ -87,6 +88,9 @@ public class MainWindow {
 		
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
+
+
+		
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
@@ -136,7 +140,35 @@ public class MainWindow {
 		});
 		btnSaveSettings.setBounds(64, 711, 200, 27);
 		panel.add(btnSaveSettings);
-		
+
+		//text label for time format
+		JLabel lblTimeFormat = new JLabel("Time format");
+		lblTimeFormat.setForeground(Color.WHITE);
+		lblTimeFormat.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblTimeFormat.setBounds(64, 621, 121, 17);
+		panel.add(lblTimeFormat);
+
+		timeFormat = new JButton("24H");
+		timeFormat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//change text to 12H if it is 24H
+				if(timeFormat.getText().equals("24H")) {
+					timeFormat.setText("12H");
+					fetchWeatherData();
+				}
+				//change text to 24H if it is 12H
+				else {
+					timeFormat.setText("24H");
+					fetchWeatherData();
+				}
+				
+
+			}
+		});
+		timeFormat.setBounds(64, 650, 200, 27);
+		panel.add(timeFormat);
+
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/temperature-icon.png")));
 		label.setBounds(356, 199, 152, 149);
@@ -159,6 +191,10 @@ public class MainWindow {
 		scrollPane.setViewportView(hourPanel);
 		hourPanel.setLayout(new BoxLayout(hourPanel, BoxLayout.X_AXIS));
 	}
+
+
+	
+
 	
 	private void fetchWeatherData() {
 		var location = (Location)locationField.getSelectedItem();
@@ -179,14 +215,30 @@ public class MainWindow {
 				// Display hour data
 				
 				hourPanel.removeAll();
+				var dayHours = day.getHours();
+
+				var is24H = timeFormat.getText().equals("12H") ? false : true;
+
 				
-				for(var hour : day.getHours()) {
 				
+				for(int dayHour =0 ; dayHour < 24; dayHour++) {
+
+					var hour = dayHours.get(dayHour);
+					var period = "";
+				
+					if(!is24H) {
+						period = dayHour < 12 ? "AM" : "PM";
+						hour.hour = hour.hour % 12;
+					}
+
 					JPanel hourDataElement = new JPanel();
 					hourDataElement.setBackground(Color.WHITE);
 					hourDataElement.setLayout(null);
-					
-					JLabel hourLabel = new JLabel((hour.getHour() < 10 ? "0" : "") + Integer.toString(hour.getHour()) + ":00");
+
+
+
+
+					JLabel hourLabel = new JLabel((hour.hour < 10 ? "0" : "") + Integer.toString(hour.getHour()) + ":00" + period);
 					hourLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 					hourLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					hourLabel.setBounds(0, 12, 110, 17);
@@ -213,4 +265,9 @@ public class MainWindow {
 			Messages.showError(e.getMessage());
 		}
 	}
+
+	
+
+
+	
 }
