@@ -144,6 +144,25 @@ public class MainWindow {
 		lblTimeFormat.setBounds(64, 621, 121, 17);
 		panel.add(lblTimeFormat);
 
+
+		//reset all to default
+		JButton reset = new JButton("Reset");
+		reset.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dateChooser.setDate(today.getTime());
+				locationField.setSelectedIndex(0);
+				timeFormat.setText("24H");
+				fetchWeatherData();
+			}
+		});
+		reset.setBounds(64, 690, 200, 27);
+		panel.add(reset);
+
+
+
+
+
 		timeFormat = new JButton("24H");
 		timeFormat.addMouseListener(new MouseAdapter() {
 			@Override
