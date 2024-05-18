@@ -152,12 +152,10 @@ public class MainWindow {
 		timeFormat.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//change text to 12H if it is 24H
 				if(timeFormat.getText().equals("24H")) {
 					timeFormat.setText("12H");
 					fetchWeatherData();
 				}
-				//change text to 24H if it is 12H
 				else {
 					timeFormat.setText("24H");
 					fetchWeatherData();
@@ -238,7 +236,7 @@ public class MainWindow {
 
 
 
-					JLabel hourLabel = new JLabel((hour.hour < 10 ? "0" : "") + Integer.toString(hour.getHour()) + ":00" + period);
+					JLabel hourLabel = new JLabel((hour.hour < 10 ? "0" : "") + Integer.toString(hour.hour) + ":00" + period);
 					hourLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 					hourLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					hourLabel.setBounds(0, 12, 110, 17);
