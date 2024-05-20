@@ -2,7 +2,7 @@ package WeatherAppImplementation;
 
 public class HourlyWeather extends WeatherUnit {
 	private DailyWeather day;
-	private int hour;
+	public int hour;
 	
 	public HourlyWeather(double temperature, int hour, DailyWeather day) {
 		super(temperature);
