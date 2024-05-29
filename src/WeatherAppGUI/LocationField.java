@@ -47,10 +47,8 @@ public class LocationField extends JComboBox<Location> {
 	}
 	
 	public void chooseCurrentLocation () {
-		// TODO: Implement setting current ip location 
-	
-		// Temporary test data:
-		this.addItem(new Location("Latvia, Riga", 56.94889, 24.10639));
+		GetLocation currLoc = new GetLocation();
+		this.addItem(new Location(currLoc.getCountry() + ", " + currLoc.getCity(), currLoc.getLat(), currLoc.getLon()));
 	}
 	
 	private void fetchLocations() {
