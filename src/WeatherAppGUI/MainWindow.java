@@ -281,6 +281,7 @@ public class MainWindow {
 				hourPanel.removeAll();
 				var dayHours = day.getHours();
 				double value = 0;
+				String symbol = null;
 				for (int dayHour = 0; dayHour < 24; dayHour++) {
 
 					var hour = dayHours.get(dayHour);
@@ -288,12 +289,15 @@ public class MainWindow {
 
 					if (type == "t") {
 						value = hour.getTemperature();
+						symbol = "%.0f°";
 					}
 					else if(type == "w") {
 						value = hour.getWindSpeed();
+						symbol = "%.0fkm/h";
 					}
 					else if(type == "p") {
 						value = hour.getPrecipitaion();
+						symbol = "%.0f%%";
 					}
 					
 					
@@ -325,7 +329,7 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format("%.0f°", value)); //šeit jamaina
+					JLabel dataLabel = new JLabel(String.format(symbol, value)); //šeit jamaina
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					dataLabel.setBounds(0, 55, 110, 17);
