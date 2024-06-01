@@ -63,25 +63,15 @@ public class LocationField extends JComboBox<Location> {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED && isLoaded) {
-                	System.out.println("State change");
-                	/*
-                	var testLoc = (Location) e.getItem();
-                	System.out.println("itemsStateChaned listener fired");
-                	System.out.println(testLoc.getName()+' '+testLoc.getPlaceId()+", HASHCODE: "+testLoc.hashCode());*/
-                    
-                    var selectedItem = (Location) LocationField.this.getSelectedItem();//get selected item placeid ir null?
-                    System.out.println(selectedItem.getName()+' '+selectedItem.getPlaceId()+", HASHCODE: "+selectedItem.hashCode());
+                    var selectedItem = (Location) LocationField.this.getSelectedItem();
                     for (int i = 0; i < LocationField.this.getItemCount(); i++) {
                         Location item = LocationField.this.getItemAt(i);
-                        System.out.println(item.getName() +' '+ item.getPlaceId()+", HASHCODE: "+item.hashCode());
                         if(item.getName().equals(selectedItem.getName())) {
                         	selectedItem.setPlaceId(item.getPlaceId());
                         	continue;
                         }
                     }
                     if (selectedItem.getPlaceId() != null && !selectedItem.getIsCoordsInit()) {
-                    	System.out.println(selectedItem.getName()+' '+selectedItem.getPlaceId()+", HASHCODE: "+selectedItem.hashCode());
-                    	System.out.println("Fill coords launched");
                     	fillCoordsForLocation(selectedItem);
                     }
                 }
@@ -97,6 +87,9 @@ public class LocationField extends JComboBox<Location> {
 	private void fetchLocations() {
 		var input = editor.getText();
 		handleSelectedItem(input);
+		try {
+            Thread.sleep(15);
+        } catch (InterruptedException e) {};
 		isLoaded = false;
 		if(this.isDisplayable() && editor.getText().length() > 3) {
 			this.setPopupVisible(false);
@@ -174,9 +167,10 @@ public class LocationField extends JComboBox<Location> {
 						var json = (JSONObject) new JSONParser().parse(jsonResult);
 						var result = (JSONObject) json.get("result");
 						var geometry = (JSONObject) result.get("geometry");
+						var location = (JSONObject) geometry.get("location");
 						
-						loc.setLatitude((double) geometry.get("lat"));
-						loc.setLongitude((double) geometry.get("lng"));
+						loc.setLatitude((double) location.get("lat"));
+						loc.setLongitude((double) location.get("lng"));
 						loc.setIsCoordsInit(true);
 						
 					} catch (Exception e) {
@@ -188,5 +182,4 @@ public class LocationField extends JComboBox<Location> {
 			Messages.showError(e.getMessage());
 		}
 	}
-	
 }
