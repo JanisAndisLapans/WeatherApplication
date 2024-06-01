@@ -4,7 +4,7 @@ public class HourlyWeather extends WeatherUnit {
 	private DailyWeather day;
 	public int hour;
 	
-	public HourlyWeather(double temperature, double windSpeed, double precipitaion, int hour, DailyWeather day) {
+	public HourlyWeather(double temperature, double windSpeed, long precipitaion, int hour, DailyWeather day) {
 		super(temperature, windSpeed, precipitaion);
 		this.hour = hour;
 		this.day = day;

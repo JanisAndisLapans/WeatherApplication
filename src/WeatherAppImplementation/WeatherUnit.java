@@ -5,7 +5,7 @@ public abstract class WeatherUnit {
 	protected double windSpeed;
 	protected double precipitaion;
 	
-	public WeatherUnit(double temperature, double windSpeed, double precipitaion) {
+	public WeatherUnit(double temperature, double windSpeed, long precipitaion) {
 		this.temperature = temperature;
 		this.windSpeed = windSpeed;
 		this.precipitaion = precipitaion;
@@ -31,7 +31,7 @@ public abstract class WeatherUnit {
 		return precipitaion;
 	}
 
-	public void setPrecipitaion(double precipitaion) {
+	public void setPrecipitaion(long precipitaion) {
 		this.precipitaion = precipitaion;
 	}
 }

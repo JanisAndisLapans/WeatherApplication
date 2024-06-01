@@ -241,8 +241,8 @@ public class MainWindow {
 
 				// Temperature
 				tempLabel.setText(String.format("%.0f %s", day.getTemperature(), Settings.temperatureSymbol));
-				windSpeedLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.temperatureSymbol));
-				precipitaionLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.temperatureSymbol));
+				windSpeedLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.windSpeedSymbol));
+				precipitaionLabel.setText(String.format("%.0f %s", day.getPrecipitaion(), Settings.precipitationSymbol));
 
 				// TODO: Implement showing more fetched data in GUI
 

@@ -45,7 +45,7 @@ public class WeatherData {
 			count++;
 		}
 		
-		var day = new DailyWeather(tempSum/count, windSpeedSum/count, precipitationSum/count, date, hourly);
+		var day = new DailyWeather(tempSum/count, windSpeedSum/count, (long) precipitationSum/count, date, hourly);
 	
 		for (var h : hourly) {			
 			h.setDay(day);
@@ -84,7 +84,7 @@ public class WeatherData {
 			
 			var temp = (double) tempIter.next();
 			var windSpeed = (double) windSpeedIter.next();
-			var precipitaion = (double) precipitaionIter.next();
+			var precipitaion = (long) precipitaionIter.next();
 			
 			if(currentDay == null) { // first
 				currentDay = Util.truncateDate(date);
