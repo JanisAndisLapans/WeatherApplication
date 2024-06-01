@@ -351,12 +351,11 @@ public class MainWindow {
 				var day = currentWeatherData.getDailyData().get(0);
 				var temp = day.getTemperature();
 				var dayHours = day.getHours();
-				
 
-				if(Settings.temperatureSymbol.equals("°F")){
+				if (Settings.temperatureSymbol.equals("°F")) {
 					temp = convertCelsiusToFahrenheit(temp);
 				}
-
+				
 				// Temperature
 				tempLabel.setText(String.format("%.0f %s", temp, Settings.temperatureSymbol));
 				// Wind speed
@@ -376,9 +375,10 @@ public class MainWindow {
 				for (int dayHour = 0; dayHour < 24; dayHour++) {
 					var hour = dayHours.get(dayHour);
 					var period = "";
+					var hourTemp = hour.getTemperature();
 
 					if(Settings.temperatureSymbol.equals("°F")){
-						temp = convertCelsiusToFahrenheit(hour.getTemperature());
+						temp = convertCelsiusToFahrenheit(hourTemp);
 					}
 					
 					if (type == "t") {
