@@ -8,8 +8,8 @@ public class DailyWeather extends WeatherUnit {
 	private List<HourlyWeather> hours;
 	Calendar date;
 	
-	public DailyWeather(double temperature, Calendar date, List<HourlyWeather> hours) {
-		super(temperature);
+	public DailyWeather(double temperature, double windSpeed, double precipitaion, Calendar date, List<HourlyWeather> hours) {
+		super(temperature, windSpeed, precipitaion);
 		this.date = date;
 		this.hours = hours;
 	}

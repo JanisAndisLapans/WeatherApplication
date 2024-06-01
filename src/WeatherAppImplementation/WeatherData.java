@@ -35,14 +35,17 @@ public class WeatherData {
 		int count = 0;
 		
 		float tempSum = 0;
+		float windSpeedSum = 0;
+		float precipitationSum = 0;
 		
 		for (var h : hourly) {			
 			tempSum += h.getTemperature();
-			
+			windSpeedSum += h.getWindSpeed();
+			precipitationSum += h.getPrecipitaion();
 			count++;
 		}
 		
-		var day = new DailyWeather(tempSum/count, date, hourly);
+		var day = new DailyWeather(tempSum/count, windSpeedSum/count, precipitationSum/count, date, hourly);
 	
 		for (var h : hourly) {			
 			h.setDay(day);
@@ -58,6 +61,8 @@ public class WeatherData {
 		
 		var time = (JSONArray) hourly.get("time");
 		var temps = (JSONArray) hourly.get("temperature_2m");
+		var windSpeeds = (JSONArray) hourly.get("wind_speed_10m");
+		var precipitationProbabilities = (JSONArray) hourly.get("precipitation_probability"); 
 		
 		var dailyData = new ArrayList<DailyWeather>();
 		
@@ -70,12 +75,16 @@ public class WeatherData {
 		
 		var timeIter = time.iterator();
 		var tempIter = temps.iterator();
+		var windSpeedIter = windSpeeds.iterator();
+		var precipitaionIter = precipitationProbabilities.iterator();
 		
 		while(timeIter.hasNext()) {
 			var date = Calendar.getInstance();
 			date.setTime(APIDateFormatTime.parse((String) timeIter.next()));
 			
 			var temp = (double) tempIter.next();
+			var windSpeed = (double) windSpeedIter.next();
+			var precipitaion = (double) precipitaionIter.next();
 			
 			if(currentDay == null) { // first
 				currentDay = Util.truncateDate(date);
@@ -85,7 +94,7 @@ public class WeatherData {
 				hourlyData = new ArrayList<HourlyWeather>();
 			}
 			
-			hourlyData.add(new HourlyWeather(temp, date.get(Calendar.HOUR_OF_DAY), null));
+			hourlyData.add(new HourlyWeather(temp, windSpeed, precipitaion, date.get(Calendar.HOUR_OF_DAY), null));
 		}
 		
 		dailyData.add(aggregateDaily(hourlyData, currentDay)); // Add last day since loop is already done
@@ -105,7 +114,9 @@ public class WeatherData {
 		final List<String> propertiesToFetch = new ArrayList<String>(){private static final long serialVersionUID = 7279058049570501796L;
 
 		{  
-			add("temperature_2m"); // TODO: fetch more data
+			add("temperature_2m");
+			add("wind_speed_10m");
+			add("precipitation_probability");// TODO: fetch more data
 		}};
 		
 		// Remove time info for comparisons

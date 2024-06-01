@@ -69,6 +69,8 @@ public class MainWindow {
 	private JButton btnSaveSettings;
 	private JButton timeFormat;
 	private JLabel tempLabel;
+	private JLabel windSpeedLabel;
+	private JLabel precipitaionLabel;
 	private LocationField locationField;
 	private JDateChooser dateChooser;
 	private JPanel hourPanel;
@@ -188,8 +190,20 @@ public class MainWindow {
 		tempLabel = new JLabel("...");
 		tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		tempLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		tempLabel.setBounds(492, 199, 174, 149);
+		tempLabel.setBounds(493, 199, 174, 149);
 		frame.getContentPane().add(tempLabel);
+		
+		windSpeedLabel = new JLabel("...");
+		windSpeedLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		windSpeedLabel.setFont(new Font("Dialog", Font.BOLD, 57));
+		windSpeedLabel.setBounds(687, 199, 174, 149);
+		frame.getContentPane().add(windSpeedLabel);
+		
+		precipitaionLabel = new JLabel("...");
+		precipitaionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		precipitaionLabel.setFont(new Font("Dialog", Font.BOLD, 57));
+		precipitaionLabel.setBounds(873, 199, 174, 149);
+		frame.getContentPane().add(precipitaionLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(368, 381, 810, 99);
@@ -227,6 +241,8 @@ public class MainWindow {
 
 				// Temperature
 				tempLabel.setText(String.format("%.0f %s", day.getTemperature(), Settings.temperatureSymbol));
+				windSpeedLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.temperatureSymbol));
+				precipitaionLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.temperatureSymbol));
 
 				// TODO: Implement showing more fetched data in GUI
 
