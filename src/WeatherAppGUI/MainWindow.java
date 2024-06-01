@@ -289,10 +289,11 @@ public class MainWindow {
 				var day = currentWeatherData.getDailyData().get(0);
 				var temp = day.getTemperature();
 				var dayHours = day.getHours();
+
+				if (Settings.temperatureSymbol.equals("°F")) {
+					temp = convertCelsiusToFahrenheit(temp);
+				}
 				
-
-
-
 				// Temperature
 				tempLabel.setText(String.format("%.0f %s", temp, Settings.temperatureSymbol));
 
@@ -306,9 +307,11 @@ public class MainWindow {
 
 					var hour = dayHours.get(dayHour);
 					var period = "";
+					var hourTemp = hour.getTemperature();
+
 
 					if(Settings.temperatureSymbol.equals("°F")){
-						temp = convertCelsiusToFahrenheit(temp);
+						temp = convertCelsiusToFahrenheit(hourTemp);
 					}
 
 					// API returns 0 as 12th hour
@@ -339,7 +342,7 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format("%.0f°", day.getTemperature()));
+					JLabel dataLabel = new JLabel(String.format("%.0f°", temp));
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					dataLabel.setBounds(0, 55, 110, 17);
