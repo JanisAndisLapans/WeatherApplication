@@ -87,7 +87,7 @@ public class MainWindow {
 		frame = new JFrame();
 		frame.getContentPane().setForeground(Color.WHITE);
 		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setBounds(0, 0, 1200, 800);
+		frame.setBounds(0, 0, 1300, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frame.setResizable(false);
@@ -95,7 +95,7 @@ public class MainWindow {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(0, 0, 356, 766);
+		panel.setBounds(0, 0, 356, 1100);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -211,17 +211,49 @@ public class MainWindow {
 
 			}
 		});
+		btnSaveState.setBounds(64, 650, 200, 27);
+		panel.add(btnSaveState);
+
+		//add load state button
+		JButton btnLoadState = new JButton("Load State");
+		btnLoadState.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//load the state of the settings
+				switch (Settings.loadState()){
+					case 0:
+						timeFormat.setSelectedItem(Settings.timeFormat);
+						tempUnit.setSelectedItem(Settings.temperatureSymbol.equals("°C") ? "Celsius" : "Fahrenheit");
+						fetchWeatherData();
+						break;
+					case 1:
+						Messages.showError("Error loading settings");
+						break;
+					case 2:
+						Messages.showError("No file selected");
+						break;
+					case 101:
+						Messages.showError("temperatureSymbol not found in file");
+						break;
+					case 102:
+						Messages.showError("timeFormat not found in file");
+						break;
+					default:
+						break;
+				}
+			}
+		});
 		btnLoadState.setBounds(64, 620, 200, 27);
 		panel.add(btnLoadState);
-		
+
 		tempLabel = new JLabel("...");
 		tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		tempLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		tempLabel.setBounds(492, 199, 174, 149);
+		tempLabel.setBounds(452, 179, 174, 149);
 		frame.getContentPane().add(tempLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(368, 381, 810, 99);
+		scrollPane.setBounds(368, 381, 900, 99);
 		frame.getContentPane().add(scrollPane);
 
 		hourPanel = new JPanel();
@@ -268,32 +300,28 @@ public class MainWindow {
 		
 		JLabel windIcon = new JLabel("");
 		windIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Wind-Icon.png")));
-		windIcon.setBounds(600, 179, 152, 149);
+		windIcon.setBounds(627, 179, 152, 149);
 		frame.getContentPane().add(windIcon);
 		
 		JLabel precipitationIcon = new JLabel("");
 		precipitationIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Precipitation-Icon.png")));
-		precipitationIcon.setBounds(854, 179, 152, 149);
+		precipitationIcon.setBounds(988, 179, 152, 149);
 		frame.getContentPane().add(precipitationIcon);
 		
 		windSpeedLabel = new JLabel("...");
 		windSpeedLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		windSpeedLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-		windSpeedLabel.setBounds(668, 179, 174, 149);
+		windSpeedLabel.setFont(new Font("Dialog", Font.BOLD, 57));
+		windSpeedLabel.setBounds(731, 179, 228, 149);
 		frame.getContentPane().add(windSpeedLabel);
 		
 		precipitaionLabel = new JLabel("...");
 		precipitaionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		precipitaionLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-		precipitaionLabel.setBounds(909, 179, 174, 149);
+		precipitaionLabel.setFont(new Font("Dialog", Font.BOLD, 57));
+		precipitaionLabel.setBounds(1092, 179, 174, 149);
 		frame.getContentPane().add(precipitaionLabel);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(391, 457, 768, 99);
-		frame.getContentPane().add(scrollPane);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(391, 338, 790, 1);
+		panel_1.setBounds(391, 340, 875, 0);
 		panel_1.setBackground(new Color(0, 0, 0));
 		frame.getContentPane().add(panel_1);
 		
@@ -302,11 +330,11 @@ public class MainWindow {
 		frame.getContentPane().add(btnTemp);
 		
 		JButton btnWind = new JButton("Wind");
-		btnWind.setBounds(668, 616, 175, 45);
+		btnWind.setBounds(747, 616, 175, 45);
 		frame.getContentPane().add(btnWind);
 		
 		JButton btnPrecipitation = new JButton("Precipitation");
-		btnPrecipitation.setBounds(908, 616, 175, 45);
+		btnPrecipitation.setBounds(1053, 616, 175, 45);
 		frame.getContentPane().add(btnPrecipitation);
 		btnPrecipitation.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
@@ -368,7 +396,6 @@ public class MainWindow {
 				// Display hour data
 				hourPanel.removeAll();
 
-				var dayHours = day.getHours();
 				double value = 0;
 				String symbol = null;
 
