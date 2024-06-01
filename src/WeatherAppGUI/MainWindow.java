@@ -41,6 +41,7 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
 
+
 public class MainWindow {
 
 	private JFrame frame;
@@ -67,7 +68,7 @@ public class MainWindow {
 	}
 
 	private JButton btnSaveSettings;
-	private JButton timeFormat;
+	private JComboBox<String> timeFormat;
 	private JLabel tempLabel;
 	private LocationField locationField;
 	private JDateChooser dateChooser;
@@ -127,7 +128,7 @@ public class MainWindow {
 		locationField.setBounds(64, 209, 200, 26);
 		panel.add(locationField);
 
-		btnSaveSettings = new JButton("Save settings");
+		btnSaveSettings = new JButton("Apply");
 		btnSaveSettings.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -137,22 +138,47 @@ public class MainWindow {
 		btnSaveSettings.setBounds(64, 711, 200, 27);
 		panel.add(btnSaveSettings);
 
-		// text label for time format
-		JLabel lblTimeFormat = new JLabel("Time format");
-		lblTimeFormat.setForeground(Color.WHITE);
-		lblTimeFormat.setFont(new Font("Dialog", Font.PLAIN, 18));
-		lblTimeFormat.setBounds(64, 621, 121, 17);
-		panel.add(lblTimeFormat);
+		//add celsisu/fahrenheit drop down
+		JComboBox<String> tempUnit = new JComboBox<String>();
+		tempUnit.addItem("Celsius");
+		tempUnit.addItem("Fahrenheit");
+		tempUnit.setBounds(64, 580, 200, 27);
+		panel.add(tempUnit);
+
+		//when pressed tempUnit drop down
+		//change the temperature symbol in the settings
+		tempUnit.addActionListener(e -> {
+			Settings.temperatureSymbol = tempUnit.getSelectedIndex() == 0 ? "°C" : "°F";
+		});
 
 
-		//reset all to default
+
+		// time format 24/12h drop down
+		timeFormat = new JComboBox<String>();
+		timeFormat.addItem("24H");
+		timeFormat.addItem("12H");
+		timeFormat.setBounds(64, 620, 200, 27);
+		panel.add(timeFormat);
+
+		//when pressed timeFormat drop down
+		//change the time format in the settings
+		timeFormat.addActionListener(e -> {
+			if(is12H()){
+				Settings.timeFormat = "12H";
+			}else{
+				Settings.timeFormat = "24H";
+			}
+		});
+
+		//reset all to default6
 		JButton reset = new JButton("Reset");
 		reset.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dateChooser.setDate(today.getTime());
 				locationField.setSelectedIndex(0);
-				timeFormat.setText("24H");
+				timeFormat.setSelectedIndex(0);
+				tempUnit.setSelectedIndex(0);
 				fetchWeatherData();
 			}
 		});
@@ -163,22 +189,8 @@ public class MainWindow {
 
 
 
-		timeFormat = new JButton("24H");
-		timeFormat.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (timeFormat.getText().equals("24H")) {
-					timeFormat.setText("12H");
-					fetchWeatherData();
-				} else {
-					timeFormat.setText("24H");
-					fetchWeatherData();
-				}
 
-			}
-		});
-		timeFormat.setBounds(64, 650, 200, 27);
-		panel.add(timeFormat);
+
 
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/temperature-icon.png")));
@@ -204,7 +216,8 @@ public class MainWindow {
 	}
 
 	private boolean is12H() {
-		return timeFormat.getText().equals("12H");
+		// read form timeformat dropdown
+		return timeFormat.getSelectedIndex() == 1;
 	}
 
 	private String formatHourText(int hour, String period) {
@@ -225,8 +238,12 @@ public class MainWindow {
 			currentWeatherData.loadDaysWithHours(date, date, () -> {
 				var day = currentWeatherData.getDailyData().get(0);
 
+				var temp = day.getTemperature();
+				if(Settings.temperatureSymbol.equals("°F")){
+					temp = (temp * 9/5) + 32;
+				}
 				// Temperature
-				tempLabel.setText(String.format("%.0f %s", day.getTemperature(), Settings.temperatureSymbol));
+				tempLabel.setText(String.format("%.0f %s", temp, Settings.temperatureSymbol));
 
 				// TODO: Implement showing more fetched data in GUI
 
