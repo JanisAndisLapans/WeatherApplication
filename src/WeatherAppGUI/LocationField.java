@@ -2,6 +2,8 @@ package WeatherAppGUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 
 import javax.swing.JComboBox;
@@ -40,7 +42,6 @@ public class LocationField extends JComboBox<Location> {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				fetchLocations();
-
 			}
 
 			@Override
@@ -57,6 +58,35 @@ public class LocationField extends JComboBox<Location> {
 		
 		
 		chooseCurrentLocation();
+		
+		this.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED && isLoaded) {
+                	System.out.println("State change");
+                	/*
+                	var testLoc = (Location) e.getItem();
+                	System.out.println("itemsStateChaned listener fired");
+                	System.out.println(testLoc.getName()+' '+testLoc.getPlaceId()+", HASHCODE: "+testLoc.hashCode());*/
+                    
+                    var selectedItem = (Location) LocationField.this.getSelectedItem();//get selected item placeid ir null?
+                    System.out.println(selectedItem.getName()+' '+selectedItem.getPlaceId()+", HASHCODE: "+selectedItem.hashCode());
+                    for (int i = 0; i < LocationField.this.getItemCount(); i++) {
+                        Location item = LocationField.this.getItemAt(i);
+                        System.out.println(item.getName() +' '+ item.getPlaceId()+", HASHCODE: "+item.hashCode());
+                        if(item.getName().equals(selectedItem.getName())) {
+                        	selectedItem.setPlaceId(item.getPlaceId());
+                        	continue;
+                        }
+                    }
+                    if (selectedItem.getPlaceId() != null && !selectedItem.getIsCoordsInit()) {
+                    	System.out.println(selectedItem.getName()+' '+selectedItem.getPlaceId()+", HASHCODE: "+selectedItem.hashCode());
+                    	System.out.println("Fill coords launched");
+                    	fillCoordsForLocation(selectedItem);
+                    }
+                }
+            }
+        });
 	}
 	
 	public void chooseCurrentLocation () {
@@ -66,8 +96,10 @@ public class LocationField extends JComboBox<Location> {
 	
 	private void fetchLocations() {
 		var input = editor.getText();
+		handleSelectedItem(input);
 		isLoaded = false;
-		if(editor.getText().length() > 3) {
+		if(this.isDisplayable() && editor.getText().length() > 3) {
+			this.setPopupVisible(false);
 			try {
 		        new APIQuery(APIUrlPlace)
 				.function(Autocomplete)
@@ -81,17 +113,17 @@ public class LocationField extends JComboBox<Location> {
 							}
 						
 							fillAutocompleteDataFromJson(jsonResult);
-							
 						} catch (Exception e) {
 							Messages.showError(e.getMessage());
 						}
 					}
 				});
-	        
+		    this.setPopupVisible(true);
 			} catch (Exception e) {
 				Messages.showError(e.getMessage());
 			}
 		}
+		isLoaded = true;
 	}
 	
 	private void fillAutocompleteDataFromJson(BufferedReader jsonReader) throws Exception {
@@ -103,8 +135,58 @@ public class LocationField extends JComboBox<Location> {
             
 			var name = (String) prediction.get("description");
             var placeId = (String) prediction.get("place_id");
-            this.addItem(new Location(name, 0, 0, null, false));
+            this.addItem(new Location(name, 0, 0, placeId, false));
         }
+	}
+	
+	private void handleSelectedItem(String input) {
+		var selectedItem = (Location) this.getSelectedItem();
+		
+		if (!selectedItem.getName().equals(input)) {
+			this.setSelectedItem(new Location(input, 0, 0, null, false));
+			selectedItem = (Location) this.getSelectedItem();
+		};
+		
+		for (int i = 0; i < this.getItemCount(); i++) {
+            Object item = this.getItemAt(i);
+            if (!item.equals(selectedItem)) {
+                this.removeItemAt(i);
+            }
+        }
+	
+	}
+	
+	private void fillCoordsForLocation(Location loc) {
+		if(loc.getIsCoordsInit()) return;
+		
+		try {
+	        new APIQuery(APIUrlPlace)
+			.function(Details)
+			.addParam("place_id", loc.getPlaceId())
+            .addParam("key", APIKey)
+			.exec(new APIQuery.APICallback() {
+				public void run(int responseCode, BufferedReader jsonResult, String errorMessage) {
+					try {
+						if(responseCode != APIQuery.OK) {
+							throw new RuntimeException(errorMessage);
+						}
+					
+						var json = (JSONObject) new JSONParser().parse(jsonResult);
+						var result = (JSONObject) json.get("result");
+						var geometry = (JSONObject) result.get("geometry");
+						
+						loc.setLatitude((double) geometry.get("lat"));
+						loc.setLongitude((double) geometry.get("lng"));
+						loc.setIsCoordsInit(true);
+						
+					} catch (Exception e) {
+						Messages.showError(e.getMessage());
+					}
+				}
+			});
+		} catch (Exception e) {
+			Messages.showError(e.getMessage());
+		}
 	}
 	
 }

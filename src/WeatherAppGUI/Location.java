@@ -17,14 +17,6 @@ public class Location {
 		this.isCoordsInit = isCoordsInit;
 	}
 	
-	/*
-	public Location(String name, double latitude, double longitude) {
-		super();
-		this.name = name;
-		this.latitude = latitude;
-		this.longitude = longitude;
-	}*/
-	
 	public String getName() {
 		return name;
 	}
@@ -54,6 +46,10 @@ public class Location {
 	
 	public boolean getIsCoordsInit() {
 		return isCoordsInit;
+	}
+	
+	public void setIsCoordsInit(boolean isCoordsInit) {
+		this.isCoordsInit = isCoordsInit;
 	}
 
 	@Override
