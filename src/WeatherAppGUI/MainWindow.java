@@ -40,6 +40,7 @@ import Util.Settings;
 import javax.swing.ScrollPaneConstants;
 import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
+import javax.swing.JTextArea;
 
 public class MainWindow {
 
@@ -162,9 +163,6 @@ public class MainWindow {
 		reset.setBounds(64, 690, 200, 27);
 		panel.add(reset);
 
-
-
-
 		timeFormat = new JButton("24H");
 		timeFormat.addMouseListener(new MouseAdapter() {
 			@Override
@@ -182,61 +180,71 @@ public class MainWindow {
 		timeFormat.setBounds(64, 650, 200, 27);
 		panel.add(timeFormat);
 		
-		JButton btnTemp = new JButton("Temp");
-		btnTemp.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-				type = "t";
-				fetchWeatherData();
-			}
-		});
-		btnTemp.setBounds(64, 460, 137, 25);
-		panel.add(btnTemp);
+		// Heading text current location
+		JLabel headingLocation = new JLabel("Location");
+		headingLocation.setText(today.getTime().toString());
+		headingLocation.setForeground(Color.BLACK);
+		headingLocation.setBounds(391, 26, 361, 59);
+		headingLocation.setFont(new Font("Arial", Font.BOLD, 50));
+		frame.getContentPane().add(headingLocation);
 		
-		JButton btnWind = new JButton("Wind");
-		btnWind.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-				type = "w";
-				fetchWeatherData();
-			}
-		});
-		btnWind.setBounds(64, 486, 137, 25);
-		panel.add(btnWind);
+		// Heading text current date
+		JLabel headingDate = new JLabel("Date");
+		headingDate.setText(today.getTime().toString());
+		headingDate.setForeground(Color.BLACK);
+		headingDate.setBounds(391, 81, 334, 43);
+		headingDate.setFont(new Font("Arial", Font.PLAIN, 20));
+		frame.getContentPane().add(headingDate);
 		
-		JButton btnPrecipitation = new JButton("Precipitation");
-		btnPrecipitation.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-				type = "p";
-				fetchWeatherData();
-			}
-		});
-		btnPrecipitation.setBounds(64, 511, 137, 25);
-		panel.add(btnPrecipitation);
+		// Heading text "Average"
+		JLabel headingAverage = new JLabel("Average");
+		headingAverage.setForeground(Color.BLACK);
+		headingAverage.setBounds(391, 144, 188, 43);
+		headingAverage.setFont(new Font("Arial", Font.BOLD, 30));
+		frame.getContentPane().add(headingAverage);
+		
+		// Heading text "Hourly"
+		JLabel headingHourly = new JLabel("Hourly");
+		headingHourly.setForeground(Color.BLACK);
+		headingHourly.setBounds(391, 402, 188, 43);
+		headingHourly.setFont(new Font("Arial", Font.BOLD, 30));
+		frame.getContentPane().add(headingHourly);
 
-		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/temperature-icon.png")));
-		label.setBounds(356, 199, 152, 149);
-		frame.getContentPane().add(label);
+		JLabel tempIcon = new JLabel("");
+		tempIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Temperature-Icon.png")));
+		tempIcon.setBounds(391, 179, 152, 149);
+		frame.getContentPane().add(tempIcon);
+		
+		JLabel windIcon = new JLabel("");
+		windIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Wind-Icon.png")));
+		windIcon.setBounds(600, 179, 152, 149);
+		frame.getContentPane().add(windIcon);
+		
+		JLabel precipitationIcon = new JLabel("");
+		precipitationIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Precipitation-Icon.png")));
+		precipitationIcon.setBounds(854, 179, 152, 149);
+		frame.getContentPane().add(precipitationIcon);
 
 		tempLabel = new JLabel("...");
 		tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		tempLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		tempLabel.setBounds(493, 199, 174, 149);
+		tempLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+		tempLabel.setBounds(425, 179, 174, 149);
 		frame.getContentPane().add(tempLabel);
 		
 		windSpeedLabel = new JLabel("...");
 		windSpeedLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		windSpeedLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		windSpeedLabel.setBounds(687, 199, 174, 149);
+		windSpeedLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+		windSpeedLabel.setBounds(668, 179, 174, 149);
 		frame.getContentPane().add(windSpeedLabel);
 		
 		precipitaionLabel = new JLabel("...");
 		precipitaionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		precipitaionLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		precipitaionLabel.setBounds(873, 199, 174, 149);
+		precipitaionLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+		precipitaionLabel.setBounds(909, 179, 174, 149);
 		frame.getContentPane().add(precipitaionLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(368, 381, 810, 99);
+		scrollPane.setBounds(391, 457, 768, 99);
 		frame.getContentPane().add(scrollPane);
 
 		hourPanel = new JPanel();
@@ -245,6 +253,41 @@ public class MainWindow {
 		hourPanel.setBackground(new Color(255, 255, 255));
 		scrollPane.setViewportView(hourPanel);
 		hourPanel.setLayout(new BoxLayout(hourPanel, BoxLayout.X_AXIS));
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(391, 338, 790, 1);
+		panel_1.setBackground(new Color(0, 0, 0));
+		frame.getContentPane().add(panel_1);
+		
+		JButton btnTemp = new JButton("Temp");
+		btnTemp.setBounds(438, 616, 175, 45);
+		frame.getContentPane().add(btnTemp);
+		
+		JButton btnWind = new JButton("Wind");
+		btnWind.setBounds(668, 616, 175, 45);
+		frame.getContentPane().add(btnWind);
+		
+		JButton btnPrecipitation = new JButton("Precipitation");
+		btnPrecipitation.setBounds(908, 616, 175, 45);
+		frame.getContentPane().add(btnPrecipitation);
+		btnPrecipitation.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "p";
+				fetchWeatherData();
+			}
+		});
+		btnWind.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "w";
+				fetchWeatherData();
+			}
+		});
+		btnTemp.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "t";
+				fetchWeatherData();
+			}
+		});
 	}
 
 	private boolean is12H() {
@@ -351,5 +394,4 @@ public class MainWindow {
 			Messages.showError(e.getMessage());
 		}
 	}
-	
 }
