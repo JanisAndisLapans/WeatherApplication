@@ -164,7 +164,6 @@ public class MainWindow {
 
 
 
-
 		timeFormat = new JButton("24H");
 		timeFormat.addMouseListener(new MouseAdapter() {
 			@Override
@@ -181,6 +180,21 @@ public class MainWindow {
 		});
 		timeFormat.setBounds(64, 650, 200, 27);
 		panel.add(timeFormat);
+		
+		JButton btnTemp = new JButton("Temp");
+		btnTemp.addMouseListener(new MouseAdapter(){
+			
+		});
+		btnTemp.setBounds(64, 460, 137, 25);
+		panel.add(btnTemp);
+		
+		JButton btnWind = new JButton("Wind");
+		btnWind.setBounds(64, 486, 137, 25);
+		panel.add(btnWind);
+		
+		JButton btnPrecipitation = new JButton("Precipitation");
+		btnPrecipitation.setBounds(64, 511, 137, 25);
+		panel.add(btnPrecipitation);
 
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/temperature-icon.png")));
@@ -285,7 +299,7 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format("%.0f°", hour.getTemperature()));
+					JLabel dataLabel = new JLabel(String.format("%.0f°", hour.getTemperature())); //šeit jamaina
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					dataLabel.setBounds(0, 55, 110, 17);
@@ -307,5 +321,4 @@ public class MainWindow {
 			Messages.showError(e.getMessage());
 		}
 	}
-
 }
