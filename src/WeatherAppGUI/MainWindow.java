@@ -40,6 +40,7 @@ import Util.Settings;
 import javax.swing.ScrollPaneConstants;
 import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
+import javax.swing.JTextArea;
 
 
 public class MainWindow {
@@ -70,9 +71,12 @@ public class MainWindow {
 	private JButton btnSaveSettings;
 	private JComboBox<String> timeFormat;
 	private JLabel tempLabel;
+	private JLabel windSpeedLabel;
+	private JLabel precipitaionLabel;
 	private LocationField locationField;
 	private JDateChooser dateChooser;
 	private JPanel hourPanel;
+	private String type = "t"; // god forgive me
 
 	WeatherData currentWeatherData;
 
@@ -83,7 +87,7 @@ public class MainWindow {
 		frame = new JFrame();
 		frame.getContentPane().setForeground(Color.WHITE);
 		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setBounds(0, 0, 1200, 800);
+		frame.setBounds(0, 0, 1300, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frame.setResizable(false);
@@ -91,7 +95,7 @@ public class MainWindow {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(0, 0, 356, 766);
+		panel.setBounds(0, 0, 356, 1100);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -186,7 +190,6 @@ public class MainWindow {
 		panel.add(reset);
 
 
-
 		//add save state button
 		JButton btnSaveState = new JButton("Save State");
 		btnSaveState.addMouseListener(new MouseAdapter(){
@@ -207,7 +210,7 @@ public class MainWindow {
 				}
 
 			}
-	});
+		});
 		btnSaveState.setBounds(64, 650, 200, 27);
 		panel.add(btnSaveState);
 
@@ -242,20 +245,15 @@ public class MainWindow {
 		});
 		btnLoadState.setBounds(64, 620, 200, 27);
 		panel.add(btnLoadState);
-		
-		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/temperature-icon.png")));
-		label.setBounds(356, 199, 152, 149);
-		frame.getContentPane().add(label);
 
 		tempLabel = new JLabel("...");
 		tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		tempLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		tempLabel.setBounds(492, 199, 174, 149);
+		tempLabel.setBounds(452, 179, 174, 149);
 		frame.getContentPane().add(tempLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(368, 381, 810, 99);
+		scrollPane.setBounds(368, 381, 900, 99);
 		frame.getContentPane().add(scrollPane);
 
 		hourPanel = new JPanel();
@@ -264,6 +262,98 @@ public class MainWindow {
 		hourPanel.setBackground(new Color(255, 255, 255));
 		scrollPane.setViewportView(hourPanel);
 		hourPanel.setLayout(new BoxLayout(hourPanel, BoxLayout.X_AXIS));
+		
+		// Heading text current location
+		JLabel headingLocation = new JLabel("Location");
+		headingLocation.setText(today.getTime().toString());
+		headingLocation.setForeground(Color.BLACK);
+		headingLocation.setBounds(391, 26, 361, 59);
+		headingLocation.setFont(new Font("Arial", Font.BOLD, 50));
+		frame.getContentPane().add(headingLocation);
+		
+		// Heading text current date
+		JLabel headingDate = new JLabel("Date");
+		headingDate.setText(today.getTime().toString());
+		headingDate.setForeground(Color.BLACK);
+		headingDate.setBounds(391, 81, 334, 43);
+		headingDate.setFont(new Font("Arial", Font.PLAIN, 20));
+		frame.getContentPane().add(headingDate);
+		
+		// Heading text "Average"
+		JLabel headingAverage = new JLabel("Average");
+		headingAverage.setForeground(Color.BLACK);
+		headingAverage.setBounds(391, 144, 188, 43);
+		headingAverage.setFont(new Font("Arial", Font.BOLD, 30));
+		frame.getContentPane().add(headingAverage);
+		
+		// Heading text "Hourly"
+		JLabel headingHourly = new JLabel("Hourly");
+		headingHourly.setForeground(Color.BLACK);
+		headingHourly.setBounds(391, 402, 188, 43);
+		headingHourly.setFont(new Font("Arial", Font.BOLD, 30));
+		frame.getContentPane().add(headingHourly);
+
+		JLabel tempIcon = new JLabel("");
+		tempIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Temperature-Icon.png")));
+		tempIcon.setBounds(391, 179, 152, 149);
+		frame.getContentPane().add(tempIcon);
+		
+		JLabel windIcon = new JLabel("");
+		windIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Wind-Icon.png")));
+		windIcon.setBounds(627, 179, 152, 149);
+		frame.getContentPane().add(windIcon);
+		
+		JLabel precipitationIcon = new JLabel("");
+		precipitationIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Precipitation-Icon.png")));
+		precipitationIcon.setBounds(988, 179, 152, 149);
+		frame.getContentPane().add(precipitationIcon);
+		
+		windSpeedLabel = new JLabel("...");
+		windSpeedLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		windSpeedLabel.setFont(new Font("Dialog", Font.BOLD, 57));
+		windSpeedLabel.setBounds(731, 179, 228, 149);
+		frame.getContentPane().add(windSpeedLabel);
+		
+		precipitaionLabel = new JLabel("...");
+		precipitaionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		precipitaionLabel.setFont(new Font("Dialog", Font.BOLD, 57));
+		precipitaionLabel.setBounds(1092, 179, 174, 149);
+		frame.getContentPane().add(precipitaionLabel);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(391, 340, 875, 0);
+		panel_1.setBackground(new Color(0, 0, 0));
+		frame.getContentPane().add(panel_1);
+		
+		JButton btnTemp = new JButton("Temp");
+		btnTemp.setBounds(438, 616, 175, 45);
+		frame.getContentPane().add(btnTemp);
+		
+		JButton btnWind = new JButton("Wind");
+		btnWind.setBounds(747, 616, 175, 45);
+		frame.getContentPane().add(btnWind);
+		
+		JButton btnPrecipitation = new JButton("Precipitation");
+		btnPrecipitation.setBounds(1053, 616, 175, 45);
+		frame.getContentPane().add(btnPrecipitation);
+		btnPrecipitation.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "p";
+				fetchWeatherData();
+			}
+		});
+		btnWind.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "w";
+				fetchWeatherData();
+			}
+		});
+		btnTemp.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "t";
+				fetchWeatherData();
+			}
+		});
 	}
 
 	private boolean is12HFormat() {
@@ -296,24 +386,41 @@ public class MainWindow {
 				
 				// Temperature
 				tempLabel.setText(String.format("%.0f %s", temp, Settings.temperatureSymbol));
+				// Wind speed
+				windSpeedLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.windSpeedSymbol));
+				// Precipitation
+				precipitaionLabel.setText(String.format("%.0f %s", day.getPrecipitaion(), Settings.precipitationSymbol));
 
 				// TODO: Implement showing more fetched data in GUI
 
 				// Display hour data
 				hourPanel.removeAll();
 
+				double value = 0;
+				String symbol = null;
 
 				for (int dayHour = 0; dayHour < 24; dayHour++) {
-
 					var hour = dayHours.get(dayHour);
 					var period = "";
 					var hourTemp = hour.getTemperature();
 
-
 					if(Settings.temperatureSymbol.equals("°F")){
 						temp = convertCelsiusToFahrenheit(hourTemp);
 					}
-
+					
+					if (type == "t") {
+						value = temp;
+						symbol = "%.0f" + Settings.temperatureSymbol;
+					}
+					else if(type == "w") {
+						value = hour.getWindSpeed();
+						symbol = "%.0f" + Settings.windSpeedSymbol;
+					}
+					else if(type == "p") {
+						value = hour.getPrecipitaion();
+						symbol = "%.0f%" + Settings.precipitationSymbol;
+					}
+					
 					// API returns 0 as 12th hour
 					if (hour.hour == 0 && dayHour == 12) {
 						hour.hour = 12;
@@ -342,7 +449,8 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format("%.0f°", temp));
+					JLabel dataLabel = new JLabel(String.format(symbol, value)); //šeit jamaina
+					
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					dataLabel.setBounds(0, 55, 110, 17);
@@ -369,5 +477,4 @@ public class MainWindow {
 		// TODO Auto-generated method stub
 		return (temp * 9/5) + 32;
 	}
-
 }

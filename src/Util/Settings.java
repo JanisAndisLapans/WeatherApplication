@@ -11,6 +11,8 @@ public class Settings {
 
 	public static String temperatureSymbol = "°C";
 	public static String timeFormat = "24H";
+	public static String windSpeedSymbol = "km/h";
+	public static String precipitationSymbol = "%";
 
 
 	/**
