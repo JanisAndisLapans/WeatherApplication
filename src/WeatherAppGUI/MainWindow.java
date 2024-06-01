@@ -74,6 +74,7 @@ public class MainWindow {
 	private LocationField locationField;
 	private JDateChooser dateChooser;
 	private JPanel hourPanel;
+	private String type = "t"; // god forgive me
 
 	WeatherData currentWeatherData;
 
@@ -183,16 +184,31 @@ public class MainWindow {
 		
 		JButton btnTemp = new JButton("Temp");
 		btnTemp.addMouseListener(new MouseAdapter(){
-			
+			public void mouseClicked(MouseEvent e) {
+				type = "t";
+				fetchWeatherData();
+			}
 		});
 		btnTemp.setBounds(64, 460, 137, 25);
 		panel.add(btnTemp);
 		
 		JButton btnWind = new JButton("Wind");
+		btnWind.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "w";
+				fetchWeatherData();
+			}
+		});
 		btnWind.setBounds(64, 486, 137, 25);
 		panel.add(btnWind);
 		
 		JButton btnPrecipitation = new JButton("Precipitation");
+		btnPrecipitation.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				type = "p";
+				fetchWeatherData();
+			}
+		});
 		btnPrecipitation.setBounds(64, 511, 137, 25);
 		panel.add(btnPrecipitation);
 
@@ -264,13 +280,23 @@ public class MainWindow {
 
 				hourPanel.removeAll();
 				var dayHours = day.getHours();
-
+				double value = 0;
 				for (int dayHour = 0; dayHour < 24; dayHour++) {
 
 					var hour = dayHours.get(dayHour);
 					var period = "";
 
-
+					if (type == "t") {
+						value = hour.getTemperature();
+					}
+					else if(type == "w") {
+						value = hour.getWindSpeed();
+					}
+					else if(type == "p") {
+						value = hour.getPrecipitaion();
+					}
+					
+					
 					// API returns 0 as 12th hour
 					if (hour.hour == 0 && dayHour == 12) {
 						hour.hour = 12;
@@ -299,7 +325,7 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format("%.0f°", hour.getTemperature())); //šeit jamaina
+					JLabel dataLabel = new JLabel(String.format("%.0f°", value)); //šeit jamaina
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					dataLabel.setBounds(0, 55, 110, 17);
@@ -321,4 +347,5 @@ public class MainWindow {
 			Messages.showError(e.getMessage());
 		}
 	}
+	
 }
