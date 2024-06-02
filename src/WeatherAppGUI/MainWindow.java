@@ -53,6 +53,7 @@ public class MainWindow {
 	 */
 	public MainWindow() {
 		initialize();
+		loadSettings();
 		fetchWeatherData();
 	}
 
@@ -70,6 +71,8 @@ public class MainWindow {
 
 	private JButton btnSaveSettings;
 	private JComboBox<String> timeFormat;
+	private JComboBox<String> speedUnit;
+	private JComboBox<String> tempUnit;
 	private JLabel tempLabel;
 	private JLabel windSpeedLabel;
 	private JLabel precipitaionLabel;
@@ -143,14 +146,14 @@ public class MainWindow {
 		panel.add(btnSaveSettings);
 
 		//add celsisus/fahrenheit drop down
-		JComboBox<String> tempUnit = new JComboBox<String>();
+		tempUnit = new JComboBox<String>();
 		tempUnit.addItem("Celsius");
 		tempUnit.addItem("Fahrenheit");
 		tempUnit.setBounds(64, 287, 200, 27);
 		panel.add(tempUnit);
 
 		//add kmh/ms drop down
-		JComboBox<String> speedUnit = new JComboBox<String>();
+		speedUnit = new JComboBox<String>();
 		speedUnit.addItem("km/h");
 		speedUnit.addItem("m/s");
 		tempUnit.setBounds(64, 287, 200, 27);
@@ -209,63 +212,6 @@ public class MainWindow {
 		});
 		reset.setBounds(64, 672, 200, 27);
 		panel.add(reset);
-
-
-		//add save state button
-		JButton btnSaveState = new JButton("Save State");
-		btnSaveState.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				switch (Settings.saveState()){
-					case 0:
-						Messages.showError("Settings saved successfully");
-						break;
-					case 1:
-						Messages.showError("Error saving settings");
-						break;
-					default:
-						break;
-				}
-
-			}
-		});
-		btnSaveState.setBounds(64, 650, 200, 27);
-		panel.add(btnSaveState);
-
-		//add load state button
-		JButton btnLoadState = new JButton("Load State");
-		btnLoadState.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//load the state of the settings
-				switch (Settings.loadState()){
-					case 0:
-						timeFormat.setSelectedItem(Settings.timeFormat);
-						tempUnit.setSelectedItem(Settings.temperatureSymbol.equals("°C") ? "Celsius" : "Fahrenheit");
-						fetchWeatherData();
-						break;
-					case 1:
-						Messages.showError("Error loading settings");
-						break;
-					case 101:
-						Messages.showError("temperatureSymbol not found in file");
-						break;
-					case 102:
-						Messages.showError("timeFormat not found in file");
-						break;
-					case 103:
-						Messages.showError("windSpeedSymbol not found in file");
-						break;
-					case 104:
-						Messages.showError("precipitationSymbol not found in file");
-						break;
-					default:
-						break;
-				}
-			}
-		});
-		btnLoadState.setBounds(64, 620, 200, 27);
-		panel.add(btnLoadState);
 		
 		JLabel lblTemperatureMetric = new JLabel("Temperature Metric");
 		lblTemperatureMetric.setForeground(Color.WHITE);
@@ -386,7 +332,45 @@ public class MainWindow {
 				type = "t";
 				fetchWeatherData();
 			}
-		});
+		});		
+	}
+	
+	private void loadSettings () {
+		//load the state of the settings from previous uses of application
+		switch (Settings.loadState()){
+			case 0:
+				timeFormat.setSelectedItem(Settings.timeFormat);
+				tempUnit.setSelectedItem(Settings.temperatureSymbol.equals("°C") ? "Celsius" : "Fahrenheit");
+				speedUnit.setSelectedItem(Settings.windSpeedSymbol.equals("km/h") ? "km/h" : "m/s");
+				break;
+			case 1:
+				// No settings to load
+				break;
+			case 101:
+				Messages.showError("temperatureSymbol not found in file");
+				break;
+			case 102:
+				Messages.showError("timeFormat not found in file");
+				break;
+			case 103:
+				Messages.showError("windSpeedSymbol not found in file");
+				break;
+			case 104:
+				Messages.showError("precipitationSymbol not found in file");
+				break;
+			default:
+				break;
+		}
+	}
+	
+	private void saveSettings() {
+		switch (Settings.saveState()) {
+		case 1:
+			Messages.showError("Error saving settings");
+			break;
+		default:
+			break;
+		}
 	}
 
 	private boolean is12HFormat() {
@@ -401,6 +385,9 @@ public class MainWindow {
 	}
 
 	private void fetchWeatherData() {
+
+		saveSettings();
+		
 		var location = (Location) locationField.getSelectedItem();
 		currentWeatherData = new WeatherData(location.getLongitude(), location.getLatitude());
 

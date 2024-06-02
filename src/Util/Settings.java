@@ -67,8 +67,9 @@ public class Settings {
             windSpeedSymbol = properties.getProperty("windSpeedSymbol", "km/h");
             precipitationSymbol = properties.getProperty("precipitationSymbol", "%");
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e2) {
+            e2.printStackTrace();
             return 1;
         }
         return 0;
