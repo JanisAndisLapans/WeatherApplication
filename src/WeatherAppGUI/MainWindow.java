@@ -142,17 +142,37 @@ public class MainWindow {
 		btnSaveSettings.setBounds(64, 711, 200, 27);
 		panel.add(btnSaveSettings);
 
-		//add celsisu/fahrenheit drop down
+		//add celsisus/fahrenheit drop down
 		JComboBox<String> tempUnit = new JComboBox<String>();
 		tempUnit.addItem("Celsius");
 		tempUnit.addItem("Fahrenheit");
-		tempUnit.setBounds(64, 280, 200, 27);
+		tempUnit.setBounds(64, 287, 200, 27);
 		panel.add(tempUnit);
 
+		//add kmh/ms drop down
+		JComboBox<String> speedUnit = new JComboBox<String>();
+		speedUnit.addItem("km/h");
+		speedUnit.addItem("m/s");
+		tempUnit.setBounds(64, 287, 200, 27);
+		speedUnit.setBounds(64, 355, 200, 27);
+		panel.add(speedUnit);
+		
+		JLabel lblSpeedMetric = new JLabel("Speed Metric");
+		lblSpeedMetric.setForeground(Color.WHITE);
+		lblSpeedMetric.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblSpeedMetric.setBounds(64, 326, 200, 17);
+		panel.add(lblSpeedMetric);
+		
 		//when pressed tempUnit drop down
 		//change the temperature symbol in the settings
 		tempUnit.addActionListener(e -> {
 			Settings.temperatureSymbol = tempUnit.getSelectedIndex() == 0 ? "°C" : "°F";
+		});
+		
+		//when pressed speedUnit drop down
+		//change the wind speed symbol in the settings
+		speedUnit.addActionListener(e -> {
+			Settings.windSpeedSymbol = speedUnit.getSelectedIndex() == 0 ? "km/h" : "m/s";
 		});
 
 
@@ -161,7 +181,7 @@ public class MainWindow {
 		timeFormat = new JComboBox<String>();
 		timeFormat.addItem("24H");
 		timeFormat.addItem("12H");
-		timeFormat.setBounds(64, 250, 200, 27);
+		timeFormat.setBounds(64, 429, 200, 27);
 		panel.add(timeFormat);
 
 		//when pressed timeFormat drop down
@@ -175,7 +195,7 @@ public class MainWindow {
 		});
 
 		//reset all to default6
-		JButton reset = new JButton("Reset");
+		JButton reset = new JButton("Reset settings");
 		reset.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -186,7 +206,7 @@ public class MainWindow {
 				fetchWeatherData();
 			}
 		});
-		reset.setBounds(64, 320, 200, 27);
+		reset.setBounds(64, 672, 200, 27);
 		panel.add(reset);
 
 
@@ -245,6 +265,18 @@ public class MainWindow {
 		});
 		btnLoadState.setBounds(64, 620, 200, 27);
 		panel.add(btnLoadState);
+		
+		JLabel lblTemperatureMetric = new JLabel("Temperature Metric");
+		lblTemperatureMetric.setForeground(Color.WHITE);
+		lblTemperatureMetric.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblTemperatureMetric.setBounds(64, 258, 200, 17);
+		panel.add(lblTemperatureMetric);
+		
+		JLabel lblTimeMetric = new JLabel("Time Format");
+		lblTimeMetric.setForeground(Color.WHITE);
+		lblTimeMetric.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblTimeMetric.setBounds(64, 400, 200, 17);
+		panel.add(lblTimeMetric);
 
 		tempLabel = new JLabel("...");
 		tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -379,15 +411,20 @@ public class MainWindow {
 				var day = currentWeatherData.getDailyData().get(0);
 				var temp = day.getTemperature();
 				var dayHours = day.getHours();
+				var speed = day.getWindSpeed();
 
 				if (Settings.temperatureSymbol.equals("°F")) {
-					temp = convertCelsiusToFahrenheit(temp);
+					temp = Util.convertCelsiusToFahrenheit(temp);
+				}
+				
+				if (Settings.windSpeedSymbol.equals("m/s")) {
+					speed = Util.convertKMHtoMS(speed);
 				}
 				
 				// Temperature
 				tempLabel.setText(String.format("%.0f %s", temp, Settings.temperatureSymbol));
 				// Wind speed
-				windSpeedLabel.setText(String.format("%.0f %s", day.getWindSpeed(), Settings.windSpeedSymbol));
+				windSpeedLabel.setText(String.format("%.0f %s", speed, Settings.windSpeedSymbol));
 				// Precipitation
 				precipitaionLabel.setText(String.format("%.0f %s", day.getPrecipitaion(), Settings.precipitationSymbol));
 
@@ -403,17 +440,22 @@ public class MainWindow {
 					var hour = dayHours.get(dayHour);
 					var period = "";
 					var hourTemp = hour.getTemperature();
+					var hourSpeed = hour.getWindSpeed();
 
 					if(Settings.temperatureSymbol.equals("°F")){
-						temp = convertCelsiusToFahrenheit(hourTemp);
+						hourTemp = Util.convertCelsiusToFahrenheit(hourTemp);
+					}
+					
+					if (Settings.windSpeedSymbol.equals("m/s")) {
+						hourSpeed = Util.convertKMHtoMS(hourSpeed);
 					}
 					
 					if (type == "t") {
-						value = temp;
+						value = hourTemp;
 						symbol = "%.0f" + Settings.temperatureSymbol;
 					}
 					else if(type == "w") {
-						value = hour.getWindSpeed();
+						value = hourSpeed;
 						symbol = "%.0f" + Settings.windSpeedSymbol;
 					}
 					else if(type == "p") {
@@ -449,7 +491,7 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format(symbol, value)); //šeit jamaina
+					JLabel dataLabel = new JLabel(String.format(symbol, value));
 					
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -471,10 +513,5 @@ public class MainWindow {
 		} catch (Exception e) {
 			Messages.showError(e.getMessage());
 		}
-	}
-
-	private double convertCelsiusToFahrenheit(double temp) {
-		// TODO Auto-generated method stub
-		return (temp * 9/5) + 32;
 	}
 }

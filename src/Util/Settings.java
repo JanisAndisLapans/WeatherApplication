@@ -29,6 +29,7 @@ public class Settings {
                 FileWriter writer = new FileWriter(fileChooser.getSelectedFile().getAbsolutePath());
                 writer.write("temperatureSymbol=" + temperatureSymbol + "\n");
                 writer.write("timeFormat=" + timeFormat + "\n");
+                writer.write("windSpeedSymbol=" + windSpeedSymbol + "\n");
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -61,9 +62,12 @@ public class Settings {
 			if (properties.getProperty("timeFormat") == null) {
 				return 102;
 			}
-
+			if (properties.getProperty("windSpeedSymbol") == null) {
+				return 103;
+			}
             temperatureSymbol = properties.getProperty("temperatureSymbol", "°C");
             timeFormat = properties.getProperty("timeFormat", "24H");
+            windSpeedSymbol = properties.getProperty("windSpeedSymbol", "km/h");
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
