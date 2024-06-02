@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import Util.APIQuery;
 import Util.Messages;
@@ -38,14 +39,22 @@ public class WeatherData {
 		float windSpeedSum = 0;
 		float precipitationSum = 0;
 		
+		boolean hasPrecipation = true;
+		for (var h : hourly) {			
+			if(h.getPrecipitaion() == null) {
+				hasPrecipation = false;
+			}
+		}
 		for (var h : hourly) {			
 			tempSum += h.getTemperature();
 			windSpeedSum += h.getWindSpeed();
-			precipitationSum += h.getPrecipitaion();
+			if(hasPrecipation) {
+				precipitationSum += h.getPrecipitaion();
+			}
 			count++;
 		}
 		
-		var day = new DailyWeather(tempSum/count, windSpeedSum/count, (long) precipitationSum/count, date, hourly);
+		var day = new DailyWeather(tempSum/count, windSpeedSum/count, hasPrecipation ? (double) precipitationSum/count : null, date, hourly);
 	
 		for (var h : hourly) {			
 			h.setDay(day);
@@ -63,7 +72,6 @@ public class WeatherData {
 		var temps = (JSONArray) hourly.get("temperature_2m");
 		var windSpeeds = (JSONArray) hourly.get("wind_speed_10m");
 		var precipitationProbabilities = (JSONArray) hourly.get("precipitation_probability"); 
-		
 		var dailyData = new ArrayList<DailyWeather>();
 		
 		if(time.isEmpty()) {
@@ -77,15 +85,17 @@ public class WeatherData {
 		var tempIter = temps.iterator();
 		var windSpeedIter = windSpeeds.iterator();
 		var precipitaionIter = precipitationProbabilities.iterator();
-		
 		while(timeIter.hasNext()) {
 			var date = Calendar.getInstance();
 			date.setTime(APIDateFormatTime.parse((String) timeIter.next()));
 			
 			var temp = (double) tempIter.next();
 			var windSpeed = (double) windSpeedIter.next();
-			var precipitaion = (long) precipitaionIter.next();
-			
+			Double precipitaion = null;
+			var precipiationRaw = precipitaionIter.next();
+			if(precipiationRaw != null) {
+				precipitaion = Double.valueOf((long) precipiationRaw);
+			}
 			if(currentDay == null) { // first
 				currentDay = Util.truncateDate(date);
 			} else if(currentDay.before(Util.truncateDate(date))) {				
@@ -116,7 +126,7 @@ public class WeatherData {
 		{  
 			add("temperature_2m");
 			add("wind_speed_10m");
-			add("precipitation_probability");// TODO: fetch more data
+			add("precipitation_probability");
 		}};
 		
 		// Remove time info for comparisons
@@ -142,7 +152,7 @@ public class WeatherData {
 		this.days = new ArrayList<DailyWeather>();
 		
 		var forecastMinDate = (Calendar) today.clone();
-		forecastMinDate.add(Calendar.DAY_OF_YEAR, -95);
+		forecastMinDate.add(Calendar.DAY_OF_YEAR, -60);
 		
 		// Fetch historical
 		if(from.before(forecastMinDate)) {				

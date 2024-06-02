@@ -115,14 +115,17 @@ public class MainWindow {
 		panel.add(lblDate);
 
 		var today = Util.truncateDate(Calendar.getInstance());
-		var sixteenDaysAhead = (Calendar) today.clone();
-		sixteenDaysAhead.add(Calendar.DAY_OF_YEAR, 16);
+		var fifteenDaysAhead = (Calendar) today.clone();
+		fifteenDaysAhead.add(Calendar.DAY_OF_YEAR, 15);
 
 		dateChooser = new JDateChooser();
 		dateChooser.setBounds(64, 135, 200, 26);
 		dateChooser.setDate(today.getTime());
 
-		dateChooser.setMaxSelectableDate(sixteenDaysAhead.getTime());
+		dateChooser.setMaxSelectableDate(fifteenDaysAhead.getTime());
+		Calendar minDate = Calendar.getInstance();
+		minDate.set(1940, 0, 1);		
+		dateChooser.setMinSelectableDate(minDate.getTime());
 		panel.add(dateChooser);
 
 		JLabel lblLocation = new JLabel("Location");
@@ -414,14 +417,19 @@ public class MainWindow {
 				// Wind speed
 				windSpeedLabel.setText(String.format("%.0f %s", speed, Settings.windSpeedSymbol));
 				// Precipitation
-				precipitaionLabel.setText(String.format("%.0f %s", day.getPrecipitaion(), Settings.precipitationSymbol));
-
+				
+				if(day.getPrecipitaion() == null) {
+					precipitaionLabel.setText(String.format("N/A"));
+				}
+				else {
+					precipitaionLabel.setText(String.format("%.0f %s", day.getPrecipitaion(), Settings.precipitationSymbol));
+				}
 				// TODO: Implement showing more fetched data in GUI
 
 				// Display hour data
 				hourPanel.removeAll();
 
-				double value = 0;
+				Double value = Double.valueOf(0);
 				String symbol = null;
 
 				for (int dayHour = 0; dayHour < 24; dayHour++) {
@@ -479,7 +487,13 @@ public class MainWindow {
 					hourLabel.setBounds(0, 12, 110, 17);
 					hourDataElement.add(hourLabel);
 
-					JLabel dataLabel = new JLabel(String.format(symbol, value));
+					JLabel dataLabel;
+					if(value == null) {
+						dataLabel = new JLabel("N/A");
+					}
+					else {
+						dataLabel = new JLabel(String.format(symbol, value));
+					}
 					
 					dataLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
 					dataLabel.setHorizontalAlignment(SwingConstants.CENTER);

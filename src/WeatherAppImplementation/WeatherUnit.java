@@ -3,9 +3,9 @@ package WeatherAppImplementation;
 public abstract class WeatherUnit {
 	protected double temperature;
 	protected double windSpeed;
-	protected double precipitaion;
+	protected Double precipitaion;
 	
-	public WeatherUnit(double temperature, double windSpeed, long precipitaion) {
+	public WeatherUnit(double temperature, double windSpeed, Double precipitaion) {
 		this.temperature = temperature;
 		this.windSpeed = windSpeed;
 		this.precipitaion = precipitaion;
@@ -27,11 +27,11 @@ public abstract class WeatherUnit {
 		this.windSpeed = windSpeed;
 	}
 	
-	public double getPrecipitaion() {
+	public Double getPrecipitaion() {
 		return precipitaion;
 	}
 
-	public void setPrecipitaion(long precipitaion) {
+	public void setPrecipitaion(Double precipitaion) {
 		this.precipitaion = precipitaion;
 	}
 }
