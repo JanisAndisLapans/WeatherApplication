@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Calendar;
@@ -80,6 +81,8 @@ public class MainWindow {
 	private JDateChooser dateChooser;
 	private JPanel hourPanel;
 	private String type = "t"; // god forgive me
+	private JLabel headingLocation;
+	private JLabel headingDate;
 
 	WeatherData currentWeatherData;
 
@@ -246,16 +249,14 @@ public class MainWindow {
 		hourPanel.setLayout(new BoxLayout(hourPanel, BoxLayout.X_AXIS));
 		
 		// Heading text current location
-		JLabel headingLocation = new JLabel("Location");
-		headingLocation.setText(today.getTime().toString());
+		headingLocation = new JLabel("Location");
 		headingLocation.setForeground(Color.BLACK);
 		headingLocation.setBounds(391, 26, 361, 59);
 		headingLocation.setFont(new Font("Arial", Font.BOLD, 50));
 		frame.getContentPane().add(headingLocation);
 		
 		// Heading text current date
-		JLabel headingDate = new JLabel("Date");
-		headingDate.setText(today.getTime().toString());
+		headingDate = new JLabel("Date");
 		headingDate.setForeground(Color.BLACK);
 		headingDate.setBounds(391, 81, 334, 43);
 		headingDate.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -282,24 +283,24 @@ public class MainWindow {
 		
 		JLabel windIcon = new JLabel("");
 		windIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Wind-Icon.png")));
-		windIcon.setBounds(627, 179, 152, 149);
+		windIcon.setBounds(649, 179, 152, 149);
 		frame.getContentPane().add(windIcon);
 		
 		JLabel precipitationIcon = new JLabel("");
 		precipitationIcon.setIcon(new ImageIcon(MainWindow.class.getResource("/Images/Precipitation-Icon.png")));
-		precipitationIcon.setBounds(988, 179, 152, 149);
+		precipitationIcon.setBounds(1021, 179, 152, 149);
 		frame.getContentPane().add(precipitationIcon);
 		
 		windSpeedLabel = new JLabel("...");
 		windSpeedLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		windSpeedLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		windSpeedLabel.setBounds(731, 179, 228, 149);
+		windSpeedLabel.setBounds(747, 179, 262, 149);
 		frame.getContentPane().add(windSpeedLabel);
 		
 		precipitaionLabel = new JLabel("...");
 		precipitaionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		precipitaionLabel.setFont(new Font("Dialog", Font.BOLD, 57));
-		precipitaionLabel.setBounds(1092, 179, 174, 149);
+		precipitaionLabel.setBounds(1116, 179, 174, 149);
 		frame.getContentPane().add(precipitaionLabel);
 		
 		JPanel panel_1 = new JPanel();
@@ -392,9 +393,12 @@ public class MainWindow {
 		saveSettings();
 		
 		var location = (Location) locationField.getSelectedItem();
+		headingLocation.setText(location.toString());
 		currentWeatherData = new WeatherData(location.getLongitude(), location.getLatitude());
 
 		var date = Calendar.getInstance();
+		final var dateFormat = new SimpleDateFormat(dateChooser.getDateFormatString());
+		headingDate.setText(dateFormat.format(dateChooser.getDate()));
 		date.setTime(dateChooser.getDate());
 
 		try {
