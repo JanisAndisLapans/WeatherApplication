@@ -251,7 +251,7 @@ public class MainWindow {
 		// Heading text current location
 		headingLocation = new JLabel("Location");
 		headingLocation.setForeground(Color.BLACK);
-		headingLocation.setBounds(391, 26, 361, 59);
+		headingLocation.setBounds(391, 26, 877, 59);
 		headingLocation.setFont(new Font("Arial", Font.BOLD, 50));
 		frame.getContentPane().add(headingLocation);
 		
