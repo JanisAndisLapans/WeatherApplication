@@ -37,4 +37,11 @@ public class Util {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}	
 
+	public static double convertCelsiusToFahrenheit(double temp) {
+		return (temp * 9/5) + 32;
+	}
+	
+	public static double convertKMHtoMS(double kmh) {
+		return kmh * 5 / 18;
+	}
 }
