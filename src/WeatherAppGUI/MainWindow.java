@@ -203,6 +203,7 @@ public class MainWindow {
 				locationField.setSelectedIndex(0);
 				timeFormat.setSelectedIndex(0);
 				tempUnit.setSelectedIndex(0);
+				speedUnit.setSelectedIndex(0);
 				fetchWeatherData();
 			}
 		});
@@ -221,9 +222,6 @@ public class MainWindow {
 						break;
 					case 1:
 						Messages.showError("Error saving settings");
-						break;
-					case 2:
-						Messages.showError("No file selected");
 						break;
 					default:
 						break;
@@ -249,14 +247,17 @@ public class MainWindow {
 					case 1:
 						Messages.showError("Error loading settings");
 						break;
-					case 2:
-						Messages.showError("No file selected");
-						break;
 					case 101:
 						Messages.showError("temperatureSymbol not found in file");
 						break;
 					case 102:
 						Messages.showError("timeFormat not found in file");
+						break;
+					case 103:
+						Messages.showError("windSpeedSymbol not found in file");
+						break;
+					case 104:
+						Messages.showError("precipitationSymbol not found in file");
 						break;
 					default:
 						break;
