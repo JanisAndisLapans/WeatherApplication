@@ -93,7 +93,7 @@ public class MainWindow {
 		panel.setLayout(null);
 
 		// Heading "Settings"
-		JLabel lblSettings = new JLabel("SETTINGS");
+		JLabel lblSettings = new JLabel("Settings");
 		lblSettings.setForeground(Color.WHITE);
 		lblSettings.setBounds(64, 25, 200, 69);
 		lblSettings.setFont(new Font("Dialog", Font.BOLD, 32));
