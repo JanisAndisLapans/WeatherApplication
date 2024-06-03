@@ -13,6 +13,8 @@ __Grupas dalībnieki/izstrādātāji:__
 
 <br/>
 
+Prezentācija ir pieejama [šeit](https://docs.google.com/presentation/d/17UzA_lcUijxI2zewzcfCjoj7BDOOoEIo/edit?usp=drive_link&ouid=114194349111779554858&rtpof=true&sd=true).
+
 # Programmas koncepcija/prasību specifikācija
 
 ## Īss apraksts
@@ -81,7 +83,7 @@ datu struktūras iegūtajiem datiem;
 klase "APIQuery" no pakotnes "Util";
 - Klase "APIQuery" nodrošina vaicājuma izveidi un darbināšanu, lai iegūtu datus no izmantotā API.
 
-![DIAGRAMMA](resources/Images/Class-Diagram.png)
+![DIAGRAM](resources/Images/Class-Diagram.png)
 
 # Pakotņu diagramma
 
@@ -96,15 +98,11 @@ funkcionalitāte no klasēm, kas atrodas pakotnē "Util";
 funkcionalitāti no klasēm, kuras atrodas pakotnē "Util";
 - Pakotne "Util" sastāv no klasēm, kas satur palīgfunkcijas, kuras izmanto pārējās klases.
 
-![DIAGRAMMA](resources/Images/Package-Diagram.png)
+![DIAGRAM](resources/Images/Package-Diagram.png)
 
 # Secību diagramma
 
 Diagramma parāda API izsaukuma sagatavošanu, izsaukšanu, kļūdu apstrādi un JSON faila interpretēšanu.
 Apstrāde mainīsies atkarībā no tā, vai lietotājs vēlēsies uzzināt datus par nākotnes dienām vai pagātnes dienām.
 
-![DIAGRAMMA](resources/Images/Class-Diagram.png)
-
-# Prezentācija
-
-Prezentācija ir pieejama [šeit](https://docs.google.com/presentation/d/17UzA_lcUijxI2zewzcfCjoj7BDOOoEIo/edit?usp=drive_link&ouid=114194349111779554858&rtpof=true&sd=true).
+![DIAGRAM](resources/Images/Sequence-Diagram.png)
