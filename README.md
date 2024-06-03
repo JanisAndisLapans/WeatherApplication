@@ -24,7 +24,8 @@ konkrētas atrašanās vietas un datuma spēs parādīt attiecīgās laika progn
 
 Lietotājam ir iespēja noklusēti redzēt laikapstākļus pašreizējā laikā sev tuvumā, taču ir arī 
 iespējams atlasīt sev vēlamo atrašanās vietu, kurai noskaidrot laikapstākļu informāciju, kā arī 
-lietotājam ir arī iespējams izvēlēties līdz 16 dienām uz priekšu.
+lietotājam ir arī iespējams izvēlēties līdz 15 dienām uz priekšu vai jebkuru datumu pirms pašreizējā
+līdz pieejamo datu robežai.
 
 <br/>
 
@@ -47,14 +48,15 @@ Projekts tika izstrādāts ņemot vērā šādas darījumprasības kā sasniedza
 atrašanās vietas un datuma;
 - Iespēja lietotājam pārslēgt un redzēt kādu konkrētu laikapstākļu īpašību pa stundām konkrētajā
 diennaktī, klikšķinot uz attiecīgās pogas;
-- Iespēja lietotājam izvēlēties sev vēlamo datumu 16 dienu intervālā uz priekšu, kā arī redzēt
-informāciju par iepriekšējo 2 mēnešu dienām;
+- Iespēja lietotājam izvēlēties sev vēlamo datumu 15 dienu intervālā uz priekšu, kā arī redzēt
+informāciju par iepriekšējiem datumiem;
 - Iespēja lietotājam ievadīt un izvēlēties citu atrašanās vietu, par kuru vēlas iegūt laikapstākļu datus;
-- Iespēja lietotājam izvēlēties vai vēja ātrums tiek attēlots ar mērvienību "km/h" vai "m/h", kur "m"
-otrajā gadījumā ir jūdzes;
+- Iespēja lietotājam izvēlēties vai vēja ātrums tiek attēlots ar mērvienību "km/h" vai "m/s";
 - Iespēja liettoājam izvēlēties vai temeratūra tiks rādīta celsija vai fārenheita grādos;
 - Iespēja lietotājam izvēlēties attēloto laika formātu starp 24 un 12 stundu sistēmas;
 - Iespēja lietotājam atjaunot veiktās izmaiņas iestatījumiem uz noklusētām vērtībām.
+- Lietotāja veiktās un saglabātās izmaiņas iestatījumos tiek automātiski saglabātas un paliek spēkā
+nākamo reizi atverot programmu.
 
 <br/>
 
@@ -65,20 +67,41 @@ līdzīgai šim projektējumam:
 
 <br/>
 
-!!ATTELS KKA JAIEVIETO AR SASKARNI
-
-![SASKARNE](resources/Images/Precipitation-Icon.png)
+![SASKARNE](resources/Images/Design-Prototype.png)
 
 ## Diagrammas
 
-!!APRAKSTS PAR DIAGRAMMĀM UN DIAGRAMMU ATTĒLI
+# Klašu diagramma
 
-![DIAGRAMMA](resources/Images/Precipitation-Icon.png)
+Šī klašu diagramma attēlo 5 no programmas klāsēm, kur 4 ir no pakotnes "WeatherAppImplementation" un 1 no pakotnes "Util".
 
-# Lietošanas instrukcija
+- Klase "WeatherUnit" ir abstrakta klase, kuru paplašina klases "HourlyWeather" un "DailyWeather". Šīs klases kopumā kalpo kā
+datu struktūras iegūtajiem datiem;
+- Klase "WeatherData" izmanto klases "HourlyWeather" un "DailyWeather" datu iegūšanas procesā. Kā papildus lieta, ko izmanto šī klase ir
+klase "APIQuery" no pakotnes "Util";
+- Klase "APIQuery" nodrošina vaicājuma izveidi un darbināšanu, lai iegūtu datus no izmantotā API.
 
-!!SCREENSHOTI NO PROGRAMMAS AR BULTĀM LKM?
+![DIAGRAMMA](resources/Images/Class-Diagram.png)
 
-![INST](resources/Images/Precipitation-Icon.png)
+# Pakotņu diagramma
+
+Pakotņu diagrammā attēlotas visas 4 pakotnes, kurās ir sadalīta programmas darbība.
+
+- Pakotne "StartUp"  darbina klases pakotnē "WeatherAppGUI", papildus izmantojot arī
+klases no pakotnes "Util";
+- Pakotne "WeatherAppGUI" nodrošina saskarnes funkcionalitāti, attēlojot informāciju,
+kas tiek iegūta no pakotnes "WeatherAppImplementation" klasēm. Papildus tiek arī izmantota
+funkcionalitāte no klasēm, kas atrodas pakotnē "Util";
+- Pakotne "WeatherAppImplementation" nodrošina datu ieguvi un apstrādi, pielietojot
+funkcionalitāti no klasēm, kuras atrodas pakotnē "Util";
+- Pakotne "Util" sastāv no klasēm, kas satur palīgfunkcijas, kuras izmanto pārējās klases.
+
+![DIAGRAMMA](resources/Images/Package-Diagram.png)
+
+# Secību diagramma
+
+![DIAGRAMMA](resources/Images/Class-Diagram.png)
 
 # Prezentācija
+
+Prezentācija ir pieejama [šeit](https://docs.google.com/presentation/d/17UzA_lcUijxI2zewzcfCjoj7BDOOoEIo/edit?usp=drive_link&ouid=114194349111779554858&rtpof=true&sd=true).
