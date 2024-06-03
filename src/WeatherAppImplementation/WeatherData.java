@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import Util.APIQuery;
 import Util.Messages;
@@ -28,7 +27,7 @@ public class WeatherData {
 	private double longtitude;
 	private double latitude;
 	
-	private boolean loaded1, loaded2, loaded3;
+	private boolean loaded1, loaded2;
 	
 	private boolean loaded = false;
 	

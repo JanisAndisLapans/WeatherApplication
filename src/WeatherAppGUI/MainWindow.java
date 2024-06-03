@@ -2,52 +2,32 @@ package WeatherAppGUI;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Calendar;
 
 import Util.Messages;
 import Util.Util;
 import WeatherAppImplementation.WeatherData;
 
-import java.awt.Component;
-import javax.swing.Box;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JTextField;
-import javax.swing.JScrollBar;
-import javax.swing.JSlider;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import java.awt.Color;
 import java.awt.Font;
-import com.toedter.components.JLocaleChooser;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
-import java.util.Calendar;
 import Util.Settings;
-import javax.swing.ScrollPaneConstants;
-import java.awt.FlowLayout;
-import javax.swing.SpringLayout;
-import javax.swing.JTextArea;
 
 
 public class MainWindow {
 
 	private JFrame frame;
-	private JTextField textField;
 
 	/**
 	 * Create the window.

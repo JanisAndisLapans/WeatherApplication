@@ -1,14 +1,8 @@
 package StartUp;
 
 import java.awt.EventQueue;
-import java.util.Calendar;
-
 import WeatherAppGUI.MainWindow;
-import WeatherAppImplementation.WeatherData;
-
-import javax.swing.JOptionPane;
 import Util.Messages;
-import Util.Util;
 
 public class StartUp {
 
