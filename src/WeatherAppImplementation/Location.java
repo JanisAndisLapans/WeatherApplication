@@ -1,4 +1,6 @@
-package WeatherAppGUI;
+package WeatherAppImplementation;
+
+// Object representing a location where the weather data measurements are being fetched from (e.g. country, city)
 
 public class Location {
 

@@ -15,6 +15,10 @@ import org.json.simple.parser.JSONParser;
 
 import Util.APIQuery;
 import Util.Messages;
+import WeatherAppImplementation.GetLocation;
+import WeatherAppImplementation.Location;
+
+// Extended JComboBox<Location> component for the location searching tool
 
 public class LocationField extends JComboBox<Location> {
 
@@ -27,14 +31,18 @@ public class LocationField extends JComboBox<Location> {
 	private final String Details = "details/json";
     private final String APIKey = "AIzaSyDCWGTdf7HIrKAdSzIUX8B_Zb0RPn87Rn8";
     
+    private boolean skipHadleSelected = false;
     private boolean isLoaded;
 
 	public LocationField() {
 		super();
 		this.setEditable(true);
 	
+		//setup
+		
 		editor = (JTextComponent) this.getEditor().getEditorComponent();
 		
+		// On type fetch relevant location list
 		editor.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
@@ -54,9 +62,10 @@ public class LocationField extends JComboBox<Location> {
 			
 		});		
 		
-		
+		// Set current IP location as default on start
 		chooseCurrentLocation();
 		
+		// On selecting item fetch coordinates for the location
 		this.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -77,9 +86,15 @@ public class LocationField extends JComboBox<Location> {
         });
 	}
 	
+	// Set current IP location as selected
 	public void chooseCurrentLocation () {
 		GetLocation currLoc = new GetLocation();
-		this.addItem(new Location(currLoc.getCountry() + ", " + currLoc.getCity(), currLoc.getLat(), currLoc.getLon(), null, true));
+		skipHadleSelected = true; // dont fire events on selected
+		this.removeAllItems();
+		this.addItem(new Location(currLoc.getCity() + ", " + currLoc.getCountry(), currLoc.getLat(), currLoc.getLon(), null, true));
+		this.disableEvents(serialVersionUID);
+		this.setSelectedIndex(0);
+		skipHadleSelected = false;
 	}
 	
 	private void fetchLocations() {
@@ -95,7 +110,7 @@ public class LocationField extends JComboBox<Location> {
 		        new APIQuery(APIUrlPlace)
 				.function(Autocomplete)
 				.addParam("input", input)
-	            .addParam("key", APIKey)
+	            .key(APIKey)
 				.exec(new APIQuery.APICallback() {
 					public void run(int responseCode, BufferedReader jsonResult, String errorMessage) {
 						try {
@@ -131,6 +146,8 @@ public class LocationField extends JComboBox<Location> {
 	}
 	
 	private void handleSelectedItem(String input) {
+		if (skipHadleSelected) return;
+		
 		var selectedItem = (Location) this.getSelectedItem();
 		
 		if (!selectedItem.getName().equals(input)) {
@@ -154,7 +171,7 @@ public class LocationField extends JComboBox<Location> {
 	        new APIQuery(APIUrlPlace)
 			.function(Details)
 			.addParam("place_id", loc.getPlaceId())
-            .addParam("key", APIKey)
+            .key(APIKey)
 			.exec(new APIQuery.APICallback() {
 				public void run(int responseCode, BufferedReader jsonResult, String errorMessage) {
 					try {

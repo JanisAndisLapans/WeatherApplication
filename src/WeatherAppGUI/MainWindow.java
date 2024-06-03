@@ -10,6 +10,7 @@ import java.util.Calendar;
 
 import Util.Messages;
 import Util.Util;
+import WeatherAppImplementation.Location;
 import WeatherAppImplementation.WeatherData;
 
 import java.awt.Dimension;
@@ -209,6 +210,7 @@ public class MainWindow {
 				timeFormat.setSelectedIndex(0);
 				tempUnit.setSelectedIndex(0);
 				speedUnit.setSelectedIndex(0);
+				locationField.chooseCurrentLocation();
 				fetchWeatherData();
 			}
 		});
@@ -442,7 +444,6 @@ public class MainWindow {
 				else {
 					precipitaionLabel.setText(String.format("%.0f %s", day.getPrecipitaion(), Settings.precipitationSymbol));
 				}
-				// TODO: Implement showing more fetched data in GUI
 
 				// Display hour data
 				hourPanel.removeAll();

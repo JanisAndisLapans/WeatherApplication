@@ -1,4 +1,4 @@
-package WeatherAppGUI;
+package WeatherAppImplementation;
 
 import java.io.BufferedReader;
 //import java.io.IOException;
@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+// Class to fetch data about IP location
 
 public class GetLocation {
 	

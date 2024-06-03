@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+// Class for storing static values of global settings to be accessed throughout the application
+// Allows saving settings so that they may be maintained in when the user opens the application again
+
 public class Settings {
 
 	public static String temperatureSymbol = "°C";
