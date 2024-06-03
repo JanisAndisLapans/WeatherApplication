@@ -11,6 +11,18 @@ import java.io.InputStreamReader;
 
 // Basic class for API calls
 
+/*
+ * Example call:
+ * APIQuery
+ * .addParam("someParam", "someValue")
+ * .addParam("someParam2", "someValu2")
+ * .key(APIKey)
+ * .exec(new APIQuery.APICallback() {
+		public void run(int responseCode, BufferedReader jsonResult, String errorMessage) {
+			// Logic on callback here
+		}
+	)
+ * */
 public class APIQuery {
 	private String urlStr;
 	private List<Pair<String, String>> params;

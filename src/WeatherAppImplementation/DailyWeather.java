@@ -3,6 +3,8 @@ package WeatherAppImplementation;
 import java.util.Calendar;
 import java.util.List;
 
+// Class to store weather data for a specific calendar day 
+
 public class DailyWeather extends WeatherUnit {
 	private List<HourlyWeather> hours;
 	Calendar date;

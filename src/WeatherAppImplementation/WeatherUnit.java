@@ -1,5 +1,7 @@
 package WeatherAppImplementation;
 
+// Abstract class for a weather data in a specific time period (day, hour etc.)
+
 public abstract class WeatherUnit {
 	protected double temperature;
 	protected double windSpeed;

@@ -116,8 +116,9 @@ public class WeatherData {
 		this.latitude = e;
 	}
 	
+	// Call to load weather data into the object
 	// from - first date (max = to) 
-	// to - last date (max = today + 16 days)
+	// to - last date (max = today + 15 days)
 	// callbackOnLoad - optional callback
 	public void loadDaysWithHours(Calendar from, Calendar to, Runnable callbackOnLoad) throws Exception {
 		final List<String> propertiesToFetch = new ArrayList<String>(){private static final long serialVersionUID = 7279058049570501796L;

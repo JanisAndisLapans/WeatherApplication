@@ -1,5 +1,7 @@
 package WeatherAppImplementation;
 
+// Class to store weather data about a specific hour in a day (dependent on a DailyWeather object)
+
 public class HourlyWeather extends WeatherUnit {
 	private DailyWeather day;
 	public int hour;

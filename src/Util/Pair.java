@@ -1,5 +1,7 @@
 package Util;
 
+// Utility generic class to be used as a tuple for two elements
+
 public class Pair<T1, T2> {
 	T1 val1;
 	T2 val2;
