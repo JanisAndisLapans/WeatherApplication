@@ -100,6 +100,9 @@ funkcionalitāti no klasēm, kuras atrodas pakotnē "Util";
 
 # Secību diagramma
 
+Diagramma parāda API izsaukuma sagatavošanu, izsaukšanu, kļūdu apstrādi un JSON faila interpretēšanu.
+Apstrāde mainīsies atkarībā no tā, vai lietotājs vēlēsies uzzināt datus par nākotnes dienām vai pagātnes dienām.
+
 ![DIAGRAMMA](resources/Images/Class-Diagram.png)
 
 # Prezentācija
