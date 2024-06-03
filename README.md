@@ -67,12 +67,18 @@ līdzīgai šim projektējumam:
 
 !!ATTELS KKA JAIEVIETO AR SASKARNI
 
+![SASKARNE](resources/Images/Precipitation-Icon.png)
+
 ## Diagrammas
 
 !!APRAKSTS PAR DIAGRAMMĀM UN DIAGRAMMU ATTĒLI
 
+![DIAGRAMMA](resources/Images/Precipitation-Icon.png)
+
 # Lietošanas instrukcija
 
 !!SCREENSHOTI NO PROGRAMMAS AR BULTĀM LKM?
+
+![INST](resources/Images/Precipitation-Icon.png)
 
 # Prezentācija
