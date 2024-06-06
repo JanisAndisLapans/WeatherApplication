@@ -2,7 +2,7 @@
 
 Grupu darba ietvaros izstrādāts projekts kursā  __DatZ4019-LV : Objektorientētā programmēšana__ .
 
-<br/>
+## Grupas dalībnieki
 
 __Grupas dalībnieki/izstrādātāji:__
 - Jānis Andis Lapāns, jl21081;
@@ -11,9 +11,19 @@ __Grupas dalībnieki/izstrādātāji:__
 - Mārtiņš Vītols, mv21087;
 - Edgars Bērziņš, eb21145.
 
-<br/>
+## Prezentācija
 
 Prezentācija ir pieejama [šeit](https://docs.google.com/presentation/d/17UzA_lcUijxI2zewzcfCjoj7BDOOoEIo/edit?usp=drive_link&ouid=114194349111779554858&rtpof=true&sd=true).
+
+## Programmas darbināšanas instrukcijas
+
+Ir izveidots JAR fails "WeatherApp.jar", ar kuru iespējams darbināt un izmēģināt izstrādāto programmu.
+
+Kā alternatīvs darbināšanas veids ir palaižot failu "StartUp.java" iekš pakotnes "StartUp" mapē "src".
+Programma tikusi izstrādāta ar Eclipse IDE, ja gadījumā būs problēmas startējot programmu šādā veidā, izmantojot
+citu izstrādes vidi.
+
+<br/>
 
 # Programmas koncepcija/prasību specifikācija
 
@@ -29,8 +39,6 @@ iespējams atlasīt sev vēlamo atrašanās vietu, kurai noskaidrot laikapstāk�
 lietotājam ir arī iespējams izvēlēties līdz 15 dienām uz priekšu vai jebkuru datumu pirms pašreizējā
 līdz pieejamo datu robežai.
 
-<br/>
-
 Pieejamā informācija iekļauj:
 - Vidējo gaisa temperatūru;
 - Vidējo vēja ātrumu;
@@ -38,8 +46,6 @@ Pieejamā informācija iekļauj:
 - Gaisa temperatūru pa stundām;
 - Vēja ātrumu pa stundām;
 - Nokrišņu daudzumu pa stundām.
-
-<br/>
 
 Visa nepieciešamā informācija tika iegūta no sekojošā API: https://open-meteo.com/en/docs
 
@@ -56,24 +62,22 @@ informāciju par iepriekšējiem datumiem;
 - Iespēja lietotājam izvēlēties vai vēja ātrums tiek attēlots ar mērvienību "km/h" vai "m/s";
 - Iespēja liettoājam izvēlēties vai temeratūra tiks rādīta celsija vai fārenheita grādos;
 - Iespēja lietotājam izvēlēties attēloto laika formātu starp 24 un 12 stundu sistēmas;
-- Iespēja lietotājam atjaunot veiktās izmaiņas iestatījumiem uz noklusētām vērtībām.
+- Iespēja lietotājam atjaunot veiktās izmaiņas iestatījumiem uz noklusētām vērtībām;
 - Lietotāja veiktās un saglabātās izmaiņas iestatījumos tiek automātiski saglabātas un paliek spēkā
 nākamo reizi atverot programmu.
-
-<br/>
 
 ## Citas prasības
 
 Tā kā programmas izstrādes ietvaros tika izveidots saskarnes projektējums, programmai jābūt pēc iespējas
 līdzīgai šim projektējumam:
 
-<br/>
-
 ![SASKARNE](resources/Images/Design-Prototype.png)
 
-## Diagrammas
+<br/>
 
-# Klašu diagramma
+# Diagrammas
+
+## Klašu diagramma
 
 Šī klašu diagramma attēlo 5 no programmas klāsēm, kur 4 ir no pakotnes "WeatherAppImplementation" un 1 no pakotnes "Util".
 
@@ -85,7 +89,7 @@ klase "APIQuery" no pakotnes "Util";
 
 ![DIAGRAM](resources/Images/Class-Diagram.png)
 
-# Pakotņu diagramma
+## Pakotņu diagramma
 
 Pakotņu diagrammā attēlotas visas 4 pakotnes, kurās ir sadalīta programmas darbība.
 
@@ -100,7 +104,7 @@ funkcionalitāti no klasēm, kuras atrodas pakotnē "Util";
 
 ![DIAGRAM](resources/Images/Package-Diagram.png)
 
-# Secību diagramma
+## Secību diagramma
 
 Diagramma parāda API izsaukuma sagatavošanu, izsaukšanu, kļūdu apstrādi un JSON faila interpretēšanu.
 Apstrāde mainīsies atkarībā no tā, vai lietotājs vēlēsies uzzināt datus par nākotnes dienām vai pagātnes dienām.
